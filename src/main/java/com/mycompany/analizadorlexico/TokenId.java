@@ -4,18 +4,19 @@
  */
 package com.mycompany.analizadorlexico;
 
-import java.awt.List;
-import java.util.ArrayList;
-
 /**
  *
  * @author DAVID
  */
-public class AnalizadorL {
-    private int lineaActual;
-    private int columnaActual;
-    
-    
-    
+public enum TokenId {
+    IDENTIFICADOR,
+    OPERADOR_ARITMETICO,
+    OPERADOR_LOGICO,
+    OPERADOR_COMPARACION,
+    OPERADOR_ASIGNADOR,
+    PALABRA_RESERVADA,
+    CONSTANTE,
+    COMENTARIO,
+    OTROS,
     
 }
