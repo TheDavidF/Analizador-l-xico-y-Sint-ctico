@@ -12,9 +12,14 @@ import java.util.ArrayList;
  * @author DAVID
  */
 public class AnalizadorL {
+    
     private int lineaActual;
     private int columnaActual;
+    private String cadena;
     
+    public void analizarCadena(String string){
+        
+    }
     
     
     

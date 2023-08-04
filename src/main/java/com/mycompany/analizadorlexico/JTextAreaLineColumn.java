@@ -6,8 +6,10 @@ import javax.swing.event.CaretListener;
 import java.awt.*;
 
 public class JTextAreaLineColumn extends JFrame {
+
     private JTextArea textArea;
     private JLabel labelPosicion;
+    
 
     public JTextAreaLineColumn() {
         setTitle("JTextArea Line and Column Demo");
@@ -21,8 +23,8 @@ public class JTextAreaLineColumn extends JFrame {
         textArea.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
-        
-        // Obtener la posición actual del cursor
+
+                // Obtener la posición actual del cursor
                 int pos = textArea.getCaretPosition();
 
                 // Obtener el número de línea y columna del cursor
@@ -66,7 +68,5 @@ public class JTextAreaLineColumn extends JFrame {
     public void setLabelPosicion(JLabel labelPosicion) {
         this.labelPosicion = labelPosicion;
     }
-    
-    
 
 }
