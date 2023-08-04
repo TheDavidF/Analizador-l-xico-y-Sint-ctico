@@ -4,6 +4,10 @@
  */
 package Frames;
 
+import com.mycompany.analizadorlexico.JTextAreaLineColumn;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -14,13 +18,18 @@ import javax.swing.JLabel;
 public class FramePrincipal extends javax.swing.JFrame {
 
     private JLabel labelPosicion;
+    private JTextAreaLineColumn textArea;
     
     public FramePrincipal() {
         initComponents();
-        
+        init();
     }
 
-
+    private void init(){
+        textArea = new JTextAreaLineColumn();
+        textArea1 = textArea.getTextArea();
+        textArea2 = textArea.getTextArea();
+    }
      
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
