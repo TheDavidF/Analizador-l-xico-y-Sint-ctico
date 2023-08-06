@@ -7,17 +7,14 @@ package Frames;
 
 import com.mycompany.analizadorlexico.AnalizadorL;
 import com.mycompany.analizadorlexico.Archivo;
+import com.mycompany.analizadorlexico.Expresion;
 import java.awt.Font;
-import java.io.File;
 import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.event.CaretEvent;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileView;
-import javax.swing.plaf.FileChooserUI;
+
 import javax.swing.text.BadLocationException;
 
 /**
@@ -32,9 +29,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     private int columnaE;
     private Archivo file;
     private AnalizadorL lexico;
+    private Expresion e;
  
 
     public FramePrincipal() {
+        e = new Expresion();
         file = new Archivo();
         lexico = new AnalizadorL();
         initComponents();
@@ -113,7 +112,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelText1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -212,6 +211,10 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(textArea1.getText().length() != 0){
             lexico.analizarCadena(textArea1.getText());
+            String texto = textArea1.getText();
+            System.out.println("es un identificador? "+e.validarIdentificador(texto));
+            System.out.println("es una keyword? "+ e.validarKeywords(texto));
+            
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
         }
