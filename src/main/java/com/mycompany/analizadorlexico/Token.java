@@ -15,7 +15,7 @@ public class Token {
     private int columna;
     private String cadena;
     
-    public Token(int linea, int columna, String id, String Cadena){
+    public Token(int linea, int columna, TokenId tokenId, String Cadena){
         this.cadena = Cadena;
         this.columna = columna;
         this.id = this.id;

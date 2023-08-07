@@ -210,7 +210,6 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(textArea1.getText().length() != 0){
-            lexico.analizarCadena(textArea1.getText());
             String texto = textArea1.getText();
             System.out.println("es un identificador? "+expresion.validarIdentificador(texto));
             System.out.println("es una keyword? "+ expresion.validarKeywords(texto));

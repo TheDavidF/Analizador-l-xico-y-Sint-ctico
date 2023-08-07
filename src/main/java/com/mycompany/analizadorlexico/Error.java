@@ -8,17 +8,6 @@ package com.mycompany.analizadorlexico;
  *
  * @author DAVID
  */
-public enum TokenId {
-    IDENTIFICADOR,
-    OPERADOR_ARITMETICO,
-    OPERADOR_LOGICO,
-    OPERADOR_COMPARACION,
-    OPERADOR_ASIGNADOR,
-    PALABRA_RESERVADA,
-    ENTERO,
-    DECIMAL,
-    COMENTARIO,
-    OTROS_OPERADORES,
-    ERROR_LEXICO,
-    CADENA,
+public class Error {
+    
 }
