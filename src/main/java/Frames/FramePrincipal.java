@@ -29,11 +29,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     private int columnaE;
     private Archivo file;
     private AnalizadorL lexico;
-    private Expresion e;
+    private Expresion expresion;
  
 
     public FramePrincipal() {
-        e = new Expresion();
+        expresion = new Expresion();
         file = new Archivo();
         lexico = new AnalizadorL();
         initComponents();
@@ -212,8 +212,18 @@ public class FramePrincipal extends javax.swing.JFrame {
         if(textArea1.getText().length() != 0){
             lexico.analizarCadena(textArea1.getText());
             String texto = textArea1.getText();
-            System.out.println("es un identificador? "+e.validarIdentificador(texto));
-            System.out.println("es una keyword? "+ e.validarKeywords(texto));
+            System.out.println("es un identificador? "+expresion.validarIdentificador(texto));
+            System.out.println("es una keyword? "+ expresion.validarKeywords(texto));
+            System.out.println("es una operador? "+ expresion.validarOperador(texto));
+            System.out.println("es un entero? :"+ expresion.validarEntero(texto));
+            System.out.println("es un decimal?;: "+expresion.validarDecimal(texto));
+            System.out.println("es un comparador?: "+expresion.validarComparador(texto));
+            System.out.println("es un operador Logico?:" + expresion.validarLogico(texto));
+            System.out.println("es un asignador?: "+expresion.validarAsignacion(texto));
+            System.out.println("es un string?; "+expresion.validarCadena(texto));
+            System.out.println("es un comentario?: "+expresion.validarComentario(texto));
+            System.out.println("es un booleano?: "+ expresion.validarBoleano(texto));
+            
             
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
