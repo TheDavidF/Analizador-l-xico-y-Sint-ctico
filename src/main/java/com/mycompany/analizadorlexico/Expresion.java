@@ -13,6 +13,12 @@ import java.util.regex.Pattern;
  */
 public class Expresion {
     
+    //patron general 
+    private final String expresionGeneral = "[\\(\\)\\{\\}\\[\\]\\,\\;\\:]{1} | (True|False) | #{1}[^#]*[^\\r\\n] | \\\"[^\\\"]*\\\"|\\'[^\\']*\\' | (=|\\+=|\\*=|\\/=|-=) | (and|or|not) | [0-9]+ | [-+*/]|[/]{1,2}|[*]{1,2} | [^\\d][a-zA-Z\\_\\d]+ "
+            + "| \\b(and|as|assert|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)\\b";
+    //patron para otros operadores 
+    private final String signos = "[\\(\\)\\{\\}\\[\\]\\,\\;\\:]{1}";
+    private Pattern pSignos;
     //patron para un booleano
     private final String boleano = "(True|False)";
     private Pattern pBoleano;
@@ -62,6 +68,7 @@ public class Expresion {
         pCadena = Pattern.compile(cadena);
         pComentario = Pattern.compile(comentario);
         pBoleano = Pattern.compile(boleano);
+        pSignos = Pattern.compile(signos);
     }
     
     
@@ -110,4 +117,8 @@ public class Expresion {
     public boolean validarBoleano(String txt){
         return txt.matches(pBoleano.toString());
     } 
+    
+    public boolean validarSignos(String txt){
+        return txt.matches(pSignos.toString());
+    }
 }

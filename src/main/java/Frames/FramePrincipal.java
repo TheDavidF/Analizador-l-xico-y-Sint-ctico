@@ -4,11 +4,12 @@
  */
 package Frames;
 
-
 import com.mycompany.analizadorlexico.AnalizadorL;
 import com.mycompany.analizadorlexico.Archivo;
 import com.mycompany.analizadorlexico.Expresion;
+import com.mycompany.analizadorlexico.Token;
 import java.awt.Font;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,7 +31,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     private Archivo file;
     private AnalizadorL lexico;
     private Expresion expresion;
- 
 
     public FramePrincipal() {
         expresion = new Expresion();
@@ -46,7 +46,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         textArea.addCaretListener((CaretEvent e) -> {
             // Obtener la posición actual del cursor
             int pos = textArea.getCaretPosition();
-            
+
             // Obtener el número de línea y columna del cursor
             try {
                 linea = textArea.getLineOfOffset(pos);
@@ -55,7 +55,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 linea = 0;
                 columna = 0;
             }
-            
+
             // Mostrar la información en el JLabel
             label.setText("Línea: " + (linea + 1) + " Columna: " + (columna + 1));
         });
@@ -205,29 +205,25 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       file.cargarArchivo(this, textArea1);
+        file.cargarArchivo(this, textArea1);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(textArea1.getText().length() != 0){
+        if (textArea1.getText().length() != 0) {
             String texto = textArea1.getText();
-            System.out.println("es un identificador? "+expresion.validarIdentificador(texto));
-            System.out.println("es una keyword? "+ expresion.validarKeywords(texto));
-            System.out.println("es una operador? "+ expresion.validarOperador(texto));
-            System.out.println("es un entero? :"+ expresion.validarEntero(texto));
-            System.out.println("es un decimal?;: "+expresion.validarDecimal(texto));
-            System.out.println("es un comparador?: "+expresion.validarComparador(texto));
-            System.out.println("es un operador Logico?:" + expresion.validarLogico(texto));
-            System.out.println("es un asignador?: "+expresion.validarAsignacion(texto));
-            System.out.println("es un string?; "+expresion.validarCadena(texto));
-            System.out.println("es un comentario?: "+expresion.validarComentario(texto));
-            System.out.println("es un booleano?: "+ expresion.validarBoleano(texto));
-            
-            
+            lexico.setCadena(texto);
+            lexico.listarTokens();
+
+            ArrayList<Token> tokens = lexico.listarTokens();
+            String analisis = "";
+            for (Token token : tokens) {
+                analisis += token.getId() + ": " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() +"\n";
+            }
+            textArea2.setText(analisis);
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
         }
-        
+            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -254,8 +250,20 @@ public class FramePrincipal extends javax.swing.JFrame {
     public void setColumna(int columna) {
         this.columna = columna;
     }
-    
-    
+
+    /*
+            System.out.println("es un identificador? "+expresion.validarIdentificador(texto));
+            System.out.println("es una keyword? "+ expresion.validarKeywords(texto));
+            System.out.println("es una operador? "+ expresion.validarOperador(texto));
+            System.out.println("es un entero? :"+ expresion.validarEntero(texto));
+            System.out.println("es un decimal?;: "+expresion.validarDecimal(texto));
+            System.out.println("es un comparador?: "+expresion.validarComparador(texto));
+            System.out.println("es un operador Logico?:" + expresion.validarLogico(texto));
+            System.out.println("es un asignador?: "+expresion.validarAsignacion(texto));
+            System.out.println("es un string?; "+expresion.validarCadena(texto));
+            System.out.println("es un comentario?: "+expresion.validarComentario(texto));
+            System.out.println("es un booleano?: "+ expresion.validarBoleano(texto));
+     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
