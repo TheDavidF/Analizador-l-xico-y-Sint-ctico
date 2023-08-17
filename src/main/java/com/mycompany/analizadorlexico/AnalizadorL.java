@@ -55,10 +55,17 @@ public class AnalizadorL {
                     // Verificar símbolo de comparación o asignación
                     if (columnaActual < cadena.length()) {
                         char siguienteCaracter = cadena.charAt(columnaActual);
-
                         if (validarSigno(siguienteCaracter)) {
                             // Símbolo de comparación o asignación válido
-                            tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.IDENTIFICADOR, identificador));
+                            if (expresion.validarLogico(identificador)) {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador));
+                            } else if (expresion.validarKeywords(identificador)) {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador));
+                            } else if (expresion.validarIdentificador(identificador)) {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador));
+                            } else {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador));
+                            }
                         } else {
                             // Símbolo inválido después del identificador
                             tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador + siguienteCaracter));
@@ -66,7 +73,15 @@ public class AnalizadorL {
                         }
                     } else {
                         // Fin de cadena después del identificador
-                        tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.IDENTIFICADOR, identificador));
+                        if (expresion.validarLogico(identificador)) {
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador));
+                        } else if (expresion.validarKeywords(identificador)) {
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador));
+                        } else if (expresion.validarIdentificador(identificador)) {
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador));
+                        } else {
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador));
+                        }
                     }
                 } else {
                     // Identificador inválido
@@ -97,9 +112,9 @@ public class AnalizadorL {
                     identificador += cadena.charAt(columnaActual);
                     columnaActual++;
                 }
-                 if (identificador.length() > 1) {
+                if (identificador.length() > 1) {
                     identificador += cadena.charAt(columnaActual);
-                 }
+                }
                 columnaActual++;
                 if (expresion.validarCadena(identificador)) {
                     tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.CADENA, identificador));
@@ -120,20 +135,9 @@ public class AnalizadorL {
                 } else {
                     tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador));
                 }
-            } else if (cadena.charAt(columnaActual) == '=') {
-                String identificador = "" + cadena.charAt(columnaActual);
-                columnaActual++;
-                if (cadena.charAt((columnaActual)) != '=') {
-                    if (expresion.validarComparador(identificador)) {
-                        tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_COMPARACION, identificador));
-                    }
-                } else {
-                    if (expresion.validarAsignacion(identificador)) {
-                        tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_ASIGNADOR, identificador));
-                    }
-                }
-            } else if (cadena.charAt(columnaActual) == '=' || cadena.charAt(columnaActual) == '!' || cadena.charAt(columnaActual) == '>'
-                    || cadena.charAt(columnaActual) == '<' && cadena.charAt((columnaActual + 1)) == '=') {
+            } else if (cadena.charAt(columnaActual) == '=' && charSiguiente(cadena, columnaActual) || cadena.charAt(columnaActual) == '!' && charSiguiente(cadena, columnaActual)
+                    || cadena.charAt(columnaActual) == '>' && charSiguiente(cadena, columnaActual)
+                    || cadena.charAt(columnaActual) == '<' && charSiguiente(cadena, columnaActual)) {
                 String identificador = "";
                 identificador += cadena.charAt(columnaActual);
                 columnaActual++;
@@ -142,6 +146,15 @@ public class AnalizadorL {
                     tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_COMPARACION, identificador));
                 }
                 columnaActual++;
+            } else if (cadena.charAt(columnaActual) == '=') {
+                String identificador = "" + cadena.charAt(columnaActual);
+                columnaActual++;
+                columnaT++;
+                if (expresion.validarAsignacion(identificador)) {
+                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_ASIGNADOR, identificador));
+                } else {
+                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador));
+                }
             } else if (expresion.validarComparador("" + cadena.charAt(columnaActual))) {
                 String identificador = "" + cadena.charAt(columnaActual);
                 tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_COMPARACION, identificador));
@@ -163,6 +176,17 @@ public class AnalizadorL {
 
     }
 
+    private Boolean charSiguiente(String cadena, int columnaActual) {
+        try {
+            if (cadena.charAt((columnaActual + 1)) == '=') {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
     private boolean errorID(char c, char siguiente) {
         String string = "" + c;
         if (Character.isLetter(siguiente)) {
@@ -180,10 +204,10 @@ public class AnalizadorL {
         }
         return true;
     }
-    
-    private boolean validarSigno(char c){
-        if(expresion.validarAsignacion(""+c) || expresion.validarComparador(""+c) || expresion.validarOperador(""+c) 
-                || expresion.validarSignos(""+c) || c == '#' || c == '"' || c == '\'' || c == '!'){
+
+    private boolean validarSigno(char c) {
+        if (expresion.validarAsignacion("" + c) || expresion.validarComparador("" + c) || expresion.validarOperador("" + c)
+                || expresion.validarSignos("" + c) || c == '#' || c == '"' || c == '\'' || c == '!') {
             return true;
         }
         return false;
