@@ -22,3 +22,4 @@ public enum TokenId {
     ERROR_LEXICO,
     CADENA,
 }
+

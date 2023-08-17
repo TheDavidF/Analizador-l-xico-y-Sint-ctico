@@ -23,7 +23,7 @@ public class Expresion {
     private final String boleano = "(True|False)";
     private Pattern pBoleano;
     //patron para un comentario de una linea
-    private final String comentario ="#{1}[^#]*[^\\r\\n]";
+    private final String comentario ="^\\s*#[^#]*$";
     private Pattern pComentario;
     //patron para cadena o string
     private final String cadena = "\\\"[^\\\"]*\\\"|\\'[^\\']*\\'";
@@ -35,7 +35,7 @@ public class Expresion {
     private final String logico = "(and|or|not)";
     private Pattern pLogico;
     //patron para operadores de comparación
-    private final String comparador = "[=]{2}|[<>]|(!=|<=|>=)";
+    private final String comparador = "[=]{2}|(!=|<=|>=|<|>)";
     private Pattern pComparador;
     //patron para un entero
     private final String entero = "[0-9]+";

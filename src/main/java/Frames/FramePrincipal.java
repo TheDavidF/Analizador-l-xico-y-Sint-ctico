@@ -26,8 +26,6 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private int linea;
     private int columna;
-    private int lineaE;
-    private int columnaE;
     private Archivo file;
     private AnalizadorL lexico;
     private Expresion expresion;
@@ -70,16 +68,15 @@ public class FramePrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         labelText1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        Jscroll1 = new javax.swing.JScrollPane();
         textArea1 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
-        labelText2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         textArea2 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        labelText2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -88,57 +85,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         menuAyuda = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
-        jLabel1.setText("Error");
-
-        labelText1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        labelText1.setMaximumSize(new java.awt.Dimension(16, 16));
-        labelText1.setMinimumSize(new java.awt.Dimension(35, 16));
-
-        textArea1.setColumns(20);
-        textArea1.setRows(5);
-        textArea1.setBorder(null);
-        textArea1.setMargin(new java.awt.Insets(2, 0, 2, 2));
-        jScrollPane1.setViewportView(textArea1);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelText1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelText1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        labelText2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        textArea2.setColumns(20);
-        textArea2.setRows(5);
-        jScrollPane2.setViewportView(textArea2);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelText2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelText2, javax.swing.GroupLayout.DEFAULT_SIZE, 15, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        setBackground(new java.awt.Color(153, 204, 255));
 
         jButton1.setText("Analizar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -146,6 +93,43 @@ public class FramePrincipal extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 200));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        labelText1.setBackground(new java.awt.Color(51, 51, 51));
+        labelText1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        labelText1.setForeground(new java.awt.Color(204, 204, 204));
+        labelText1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        labelText1.setMaximumSize(new java.awt.Dimension(16, 16));
+        labelText1.setMinimumSize(new java.awt.Dimension(35, 16));
+        labelText1.setOpaque(true);
+        jPanel1.add(labelText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 236, 690, 20));
+
+        textArea1.setColumns(20);
+        textArea1.setRows(5);
+        textArea1.setBorder(null);
+        textArea1.setMargin(new java.awt.Insets(2, 0, 2, 2));
+        Jscroll1.setViewportView(textArea1);
+
+        jPanel1.add(Jscroll1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 240));
+
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        textArea2.setColumns(20);
+        textArea2.setRows(5);
+        jScrollPane1.setViewportView(textArea2);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 190));
+
+        labelText2.setBackground(new java.awt.Color(51, 51, 51));
+        labelText2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        labelText2.setForeground(new java.awt.Color(204, 204, 204));
+        labelText2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        labelText2.setMaximumSize(new java.awt.Dimension(16, 16));
+        labelText2.setMinimumSize(new java.awt.Dimension(34, 16));
+        labelText2.setOpaque(true);
+        jPanel2.add(labelText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 690, 20));
 
         menuArchivo.setText("Archivo");
 
@@ -177,28 +161,27 @@ public class FramePrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(41, 41, 41))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(22, 22, 22))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(22, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(30, 30, 30)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addGap(65, 65, 65))
         );
 
         pack();
@@ -209,21 +192,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (textArea1.getText().length() != 0) {
-            String texto = textArea1.getText();
-            lexico.setCadena(texto);
-            lexico.listarTokens();
-
-            ArrayList<Token> tokens = lexico.listarTokens();
-            String analisis = "";
-            for (Token token : tokens) {
-                analisis += token.getId() + ": " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() +"\n";
-            }
-            textArea2.setText(analisis);
-        } else {
-            JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
-        }
-            
+        analizarTexto();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -251,29 +220,34 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.columna = columna;
     }
 
-    /*
-            System.out.println("es un identificador? "+expresion.validarIdentificador(texto));
-            System.out.println("es una keyword? "+ expresion.validarKeywords(texto));
-            System.out.println("es una operador? "+ expresion.validarOperador(texto));
-            System.out.println("es un entero? :"+ expresion.validarEntero(texto));
-            System.out.println("es un decimal?;: "+expresion.validarDecimal(texto));
-            System.out.println("es un comparador?: "+expresion.validarComparador(texto));
-            System.out.println("es un operador Logico?:" + expresion.validarLogico(texto));
-            System.out.println("es un asignador?: "+expresion.validarAsignacion(texto));
-            System.out.println("es un string?; "+expresion.validarCadena(texto));
-            System.out.println("es un comentario?: "+expresion.validarComentario(texto));
-            System.out.println("es un booleano?: "+ expresion.validarBoleano(texto));
-     */
+    private void analizarTexto() {
+        textArea2.setText("");
+        if (textArea1.getText().length() != 0) {
+            String texto = textArea1.getText();
+            lexico.setCadena(texto);
+            ArrayList<Token> tokens = lexico.listarTokens();
+            String analisis = "";
+            for (Token token : tokens) {
+                analisis += "identificador :" + token.getId() + " Lexema: " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() + "\n";
+
+            }
+            textArea2.setText(analisis);
+            System.out.println("es comentario? " + expresion.validarComentario(texto));
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
+        }
+        
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane Jscroll1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelText1;
     private javax.swing.JLabel labelText2;
     private javax.swing.JMenu menuAcercade;
