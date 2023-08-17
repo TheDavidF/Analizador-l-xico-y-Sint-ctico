@@ -121,4 +121,26 @@ public class Expresion {
     public boolean validarSignos(String txt){
         return txt.matches(pSignos.toString());
     }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public String getCadena() {
+        return cadena;
+    }
+
+    public String getEntero() {
+        return entero;
+    }
+
+    public String getDecimal() {
+        return decimal;
+    }
+    
+    
 }

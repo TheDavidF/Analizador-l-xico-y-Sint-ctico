@@ -13,13 +13,15 @@ public class Token {
     private TokenId id;
     private int linea;
     private int columna;
-    private String cadena;
+    private String lexema;
+    private String patron;
     
-    public Token(int linea, int columna, TokenId tokenId, String Cadena){
-        this.cadena = Cadena;
+    public Token(int linea, int columna, TokenId tokenId, String Cadena, String patron){
+        this.lexema = Cadena;
         this.columna = columna;
         this.id = tokenId;
         this.linea = linea;
+        this.patron = patron;
     }
 
     public int getLinea() {
@@ -47,13 +49,26 @@ public class Token {
     }
 
     public String getCadena() {
-        return cadena;
+        return lexema;
     }
 
     public void setCadena(String cadena) {
-        this.cadena = cadena;
+        this.lexema = cadena;
     }
-    
+
+    public String getPatron() {
+        return patron;
+    }
+
+    public void setPatron(String patron) {
+        this.patron = patron;
+    }
+
+    @Override
+    public String toString() {
+        return "Token{" + "linea=" + linea + ", columna=" + columna + ", cadena=" + lexema + ", patron=" + patron + '}';
+    }
+
     
     
 }

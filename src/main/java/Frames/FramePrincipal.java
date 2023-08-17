@@ -228,8 +228,8 @@ public class FramePrincipal extends javax.swing.JFrame {
             ArrayList<Token> tokens = lexico.listarTokens();
             String analisis = "";
             for (Token token : tokens) {
-                analisis += "identificador :" + token.getId() + " Lexema: " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() + "\n";
-
+                //analisis += "identificador :" + token.getId() + " Lexema: " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() + "\n";
+                analisis += token;
             }
             textArea2.setText(analisis);
             System.out.println("es comentario? " + expresion.validarComentario(texto));

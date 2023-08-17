@@ -46,10 +46,12 @@ public class AnalizadorL {
                     if (columnaActual == (cadena.length() - 1)) {
                         identificador += cadena.charAt(columnaActual);
                         columnaActual++;
+                        columnaT++;
                         break;
                     }
                     identificador += cadena.charAt(columnaActual);
                     columnaActual++;
+                    columnaT++;
                 }
                 if (expresion.validarIdentificador(identificador)) {
                     // Verificar símbolo de comparación o asignación
@@ -58,52 +60,55 @@ public class AnalizadorL {
                         if (validarSigno(siguienteCaracter)) {
                             // Símbolo de comparación o asignación válido
                             if (expresion.validarLogico(identificador)) {
-                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador));
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador, identificador));
                             } else if (expresion.validarKeywords(identificador)) {
-                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador));
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador, identificador));
                             } else if (expresion.validarIdentificador(identificador)) {
-                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador));
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador, expresion.getIdentificador()));
                             } else {
-                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador));
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                             }
                         } else {
                             // Símbolo inválido después del identificador
-                            tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador + siguienteCaracter));
+                            tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador + siguienteCaracter, identificador + siguienteCaracter));
                             columnaActual++;
                         }
                     } else {
                         // Fin de cadena después del identificador
                         if (expresion.validarLogico(identificador)) {
-                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador));
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador, identificador));
                         } else if (expresion.validarKeywords(identificador)) {
-                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador));
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador, identificador));
                         } else if (expresion.validarIdentificador(identificador)) {
-                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador));
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador, expresion.getIdentificador()));
                         } else {
-                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador));
+                            tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                         }
                     }
                 } else {
                     // Identificador inválido
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                 }
             } else if (cadena.charAt(columnaActual) == '#') {
                 String identificador = "";
                 while (columnaActual < cadena.length() && cadena.charAt(columnaActual) != '\n') {
                     identificador += cadena.charAt(columnaActual);
                     columnaActual++;
+                    columnaT++;
                 }
                 lineaT++;
+                columnaT = 0;
                 if (expresion.validarComentario(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.COMENTARIO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.COMENTARIO, identificador, expresion.getComentario()));
                 } else {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                 }
             } else if (cadena.charAt(columnaActual) == '"' || cadena.charAt(columnaActual) == '\'') {
                 String identificador = "";
                 identificador += cadena.charAt(columnaActual);
                 if (columnaActual < (cadena.length() - 1)) {
                     columnaActual++;
+                    columnaT++;
                 }
                 while (columnaActual < cadena.length() && cadena.charAt(columnaActual) != '"' && cadena.charAt(columnaActual) != '\'') {
                     if (columnaActual == (cadena.length() - 1)) {
@@ -111,15 +116,17 @@ public class AnalizadorL {
                     }
                     identificador += cadena.charAt(columnaActual);
                     columnaActual++;
+                    columnaT++;
                 }
                 if (identificador.length() > 1) {
                     identificador += cadena.charAt(columnaActual);
                 }
                 columnaActual++;
+                columnaT++;
                 if (expresion.validarCadena(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.CADENA, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.CADENA, identificador, expresion.getCadena()));
                 } else {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                 }
             } else if (Character.isDigit(cadena.charAt(columnaActual))) {
                 String identificador = "";
@@ -127,13 +134,14 @@ public class AnalizadorL {
                         || columnaActual < cadena.length() && cadena.charAt(columnaActual) == '.' || columnaActual < cadena.length() && Character.isLetter(cadena.charAt(columnaActual))) {
                     identificador += cadena.charAt(columnaActual);
                     columnaActual++;
+                    columnaT++;
                 }
                 if (expresion.validarEntero(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ENTERO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ENTERO, identificador, expresion.getEntero()));
                 } else if (expresion.validarDecimal(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.DECIMAL, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.DECIMAL, identificador, expresion.getDecimal()));
                 } else {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                 }
             } else if (cadena.charAt(columnaActual) == '=' && charSiguiente(cadena, columnaActual) || cadena.charAt(columnaActual) == '!' && charSiguiente(cadena, columnaActual)
                     || cadena.charAt(columnaActual) == '>' && charSiguiente(cadena, columnaActual)
@@ -141,35 +149,39 @@ public class AnalizadorL {
                 String identificador = "";
                 identificador += cadena.charAt(columnaActual);
                 columnaActual++;
+                columnaT++;
                 identificador += cadena.charAt(columnaActual);
                 if (expresion.validarComparador(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_COMPARACION, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_COMPARACION, identificador, identificador));
                 }
                 columnaActual++;
+                columnaT++;
             } else if (cadena.charAt(columnaActual) == '=') {
                 String identificador = "" + cadena.charAt(columnaActual);
                 columnaActual++;
                 columnaT++;
                 if (expresion.validarAsignacion(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_ASIGNADOR, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_ASIGNADOR, identificador, identificador));
                 } else {
-                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                 }
             } else if (expresion.validarComparador("" + cadena.charAt(columnaActual))) {
                 String identificador = "" + cadena.charAt(columnaActual);
-                tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_COMPARACION, identificador));
+                tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OPERADOR_COMPARACION, identificador, identificador));
                 columnaActual++;
+                columnaT++;
             } else {
                 String identificador = "";
                 identificador += cadena.charAt(columnaActual);
                 if (expresion.validarSignos(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OTROS_OPERADORES, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OTROS_OPERADORES, identificador, identificador));
                 } else if (expresion.validarOperador(identificador)) {
-                    tokens.add(new Token((lineaT + 1), columnaActual, TokenId.OPERADOR_ASIGNADOR, identificador));
+                    tokens.add(new Token((lineaT + 1), columnaActual, TokenId.OPERADOR_ASIGNADOR, identificador, identificador));
                 } else {
-                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                 }
                 columnaActual++;
+                columnaT++;
             }
         }
         return tokens;
