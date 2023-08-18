@@ -8,15 +8,22 @@ import com.mycompany.analizadorlexico.AnalizadorL;
 import com.mycompany.analizadorlexico.Archivo;
 import com.mycompany.analizadorlexico.Expresion;
 import com.mycompany.analizadorlexico.Token;
+import static com.mycompany.analizadorlexico.TokenId.IDENTIFICADOR;
+import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.event.CaretEvent;
+import javax.swing.text.AttributeSet;
 
 import javax.swing.text.BadLocationException;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -40,16 +47,18 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     }
 
-    private void agregarEditor(JTextArea textArea, JLabel label) {
-        textArea.addCaretListener((CaretEvent e) -> {
+    private void agregarEditor(JTextPane textPane, JLabel label) {
+        textPane.addCaretListener((CaretEvent e) -> {
             // Obtener la posición actual del cursor
-            int pos = textArea.getCaretPosition();
+            int pos = textPane.getCaretPosition();
 
             // Obtener el número de línea y columna del cursor
             try {
-                linea = textArea.getLineOfOffset(pos);
-                columna = pos - textArea.getLineStartOffset(linea);
-            } catch (BadLocationException ex) {
+                StyledDocument doc = textPane.getStyledDocument();
+                
+                linea = doc.getDefaultRootElement().getElementIndex(pos);
+                columna = pos - doc.getDefaultRootElement().getElement(linea).getStartOffset();
+            } catch (Exception ex) {
                 linea = 0;
                 columna = 0;
             }
@@ -59,7 +68,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
 
         label.setText("Línea: 1 Columna: 1");
-        textArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        textPane.setFont(new Font("Arial", Font.PLAIN, 14));
         label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     }
@@ -72,11 +81,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         labelText1 = new javax.swing.JLabel();
         Jscroll1 = new javax.swing.JScrollPane();
-        textArea1 = new javax.swing.JTextArea();
+        textArea1 = new javax.swing.JTextPane();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textArea2 = new javax.swing.JTextArea();
         labelText2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textArea2 = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -106,21 +115,12 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText1.setOpaque(true);
         jPanel1.add(labelText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 236, 690, 20));
 
-        textArea1.setColumns(20);
-        textArea1.setRows(5);
-        textArea1.setBorder(null);
-        textArea1.setMargin(new java.awt.Insets(2, 0, 2, 2));
+        textArea1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         Jscroll1.setViewportView(textArea1);
 
         jPanel1.add(Jscroll1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 240));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        textArea2.setColumns(20);
-        textArea2.setRows(5);
-        jScrollPane1.setViewportView(textArea2);
-
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 190));
 
         labelText2.setBackground(new java.awt.Color(51, 51, 51));
         labelText2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
@@ -130,6 +130,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText2.setMinimumSize(new java.awt.Dimension(34, 16));
         labelText2.setOpaque(true);
         jPanel2.add(labelText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 690, 20));
+
+        jScrollPane2.setViewportView(textArea2);
+
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 190));
 
         menuArchivo.setText("Archivo");
 
@@ -223,13 +227,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void analizarTexto() {
         textArea2.setText("");
         if (textArea1.getText().length() != 0) {
-            String texto = textArea1.getText();
+            String texto = textArea1.getText();          
             lexico.setCadena(texto);
             ArrayList<Token> tokens = lexico.listarTokens();
+            colorear(tokens);
             String analisis = "";
             for (Token token : tokens) {
-                //analisis += "identificador :" + token.getId() + " Lexema: " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() + "\n";
-                analisis += token;
+                analisis += "identificador :" + token.getId() + " Lexema: " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() + "\n";
+                //analisis += token;
             }
             textArea2.setText(analisis);
             System.out.println("es comentario? " + expresion.validarComentario(texto));
@@ -239,6 +244,77 @@ public class FramePrincipal extends javax.swing.JFrame {
         
 
     }
+    
+    private void colorear(ArrayList<Token> tokens){
+        
+        final StyleContext contenido = StyleContext.getDefaultStyleContext();
+        
+        // colores
+        final AttributeSet colorNegro = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(0, 0, 0));
+        final AttributeSet colorCeleste = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(64, 207, 255));
+        final AttributeSet colorMorado = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(128, 0, 128));
+        final AttributeSet colorAnaranjado = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(255, 128, 0));
+        final AttributeSet colorGris = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(155, 155, 155));
+        final AttributeSet colorVerde = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(0, 128, 0));
+        final AttributeSet colorRojo = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(255, 0, 0));
+        
+        
+         StyledDocument doc = textArea1.getStyledDocument();
+
+        for (Token token : tokens) {
+            AttributeSet atributo = null;
+            switch (token.getId()) {
+                case IDENTIFICADOR:
+                    atributo = colorNegro;
+                    break;
+                case OPERADOR_ARITMETICO, OPERADOR_COMPARACION, OPERADOR_ASIGNADOR, OPERADOR_LOGICO:
+                    atributo = colorCeleste;
+                    break;
+                case PALABRA_RESERVADA:
+                    atributo = colorMorado;
+                    break;
+                case ENTERO, DECIMAL:
+                    atributo = colorAnaranjado;
+                    break;
+                case COMENTARIO:
+                    atributo = colorGris;
+                    break;
+                case OTROS_OPERADORES:
+                    atributo = colorVerde;
+                    break;
+                case ERROR_LEXICO:
+                    atributo = colorRojo;
+                    break;
+                case CADENA:
+                    atributo = colorVerde;
+                    break;
+                default:
+                    //throw new AssertionError();
+                    atributo = null;
+            }
+            
+            if(atributo != null){
+            int start = calcularPosicionInicio(doc, token);
+            int length = token.getCadena().length();
+
+            doc.setCharacterAttributes(start, length, atributo, false);
+            }
+        }
+        
+    }
+    
+    private int calcularPosicionInicio(StyledDocument doc, Token token) {
+    try {
+        String textoDocumento = doc.getText(0, doc.getLength());
+        String tokenTexto = token.getCadena();
+        
+        int inicioToken = textoDocumento.indexOf(tokenTexto);
+        return inicioToken;
+    } catch (BadLocationException e) {
+        e.printStackTrace();
+        return -1; // Manejo de erroro
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane Jscroll1;
@@ -247,14 +323,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelText1;
     private javax.swing.JLabel labelText2;
     private javax.swing.JMenu menuAcercade;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuGenerarG;
-    private javax.swing.JTextArea textArea1;
-    private javax.swing.JTextArea textArea2;
+    private javax.swing.JTextPane textArea1;
+    private javax.swing.JTextPane textArea2;
     // End of variables declaration//GEN-END:variables
 }

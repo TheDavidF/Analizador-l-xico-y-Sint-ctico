@@ -70,7 +70,16 @@ public class AnalizadorL {
                             }
                         } else {
                             // Símbolo inválido después del identificador
-                            tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador + siguienteCaracter, identificador + siguienteCaracter));
+                            //tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador + siguienteCaracter, identificador + siguienteCaracter));
+                            if (expresion.validarLogico(identificador)) {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador, identificador));
+                            } else if (expresion.validarKeywords(identificador)) {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador, identificador));
+                            } else if (expresion.validarIdentificador(identificador)) {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador, expresion.getIdentificador()));
+                            } else {
+                                tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
+                            }
                             columnaActual++;
                         }
                     } else {
@@ -92,10 +101,14 @@ public class AnalizadorL {
             } else if (cadena.charAt(columnaActual) == '#') {
                 String identificador = "";
                 while (columnaActual < cadena.length() && cadena.charAt(columnaActual) != '\n') {
+                    if(Character.isWhitespace(cadena.charAt(columnaActual)) &&  cadena.charAt(columnaActual+1) == '\n'){
+                        break;
+                    }
                     identificador += cadena.charAt(columnaActual);
                     columnaActual++;
                     columnaT++;
                 }
+                System.out.println(identificador + identificador.length());
                 lineaT++;
                 columnaT = 0;
                 if (expresion.validarComentario(identificador)) {

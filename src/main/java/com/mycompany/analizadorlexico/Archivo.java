@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 /**
  *
@@ -23,7 +24,7 @@ public class Archivo {
     
     }
     
-    public void cargarArchivo(JFrame frame, JTextArea textA){
+    public void cargarArchivo(JFrame frame, JTextPane textA){
         JFileChooser director = new JFileChooser();
         int seleccion = director.showOpenDialog(frame);
         if(seleccion == JFileChooser.APPROVE_OPTION){
