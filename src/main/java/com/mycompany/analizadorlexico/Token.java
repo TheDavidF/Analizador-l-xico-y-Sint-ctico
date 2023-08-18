@@ -64,6 +64,9 @@ public class Token {
         this.patron = patron;
     }
 
+    
+    
+
     @Override
     public String toString() {
         return "Token{" + "linea=" + linea + ", columna=" + columna + ", cadena=" + lexema + ", patron=" + patron + '}';

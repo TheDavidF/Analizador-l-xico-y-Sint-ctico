@@ -1,1 +1,16 @@
+com\mycompany\analizadorlexico\Error.class
+com\mycompany\analizadorlexico\AnalizadorL.class
 Frames\FramePrincipal.class
+com\mycompany\analizadorlexico\TokenId.class
+Frames\FramePrincipal$2.class
+com\mycompany\analizadorlexico\Expresion.class
+Frames\Reportes.class
+Frames\Reportes$1.class
+com\mycompany\analizadorlexico\Token.class
+Frames\FramePrincipal$1.class
+Frames\FramePrincipal$3.class
+com\mycompany\analizadorlexico\Graficador.class
+Frames\Panelprincipal.class
+com\mycompany\analizadorlexico\Archivo.class
+Frames\Panelprincipal$1.class
+Frames\FramePrincipal$4.class

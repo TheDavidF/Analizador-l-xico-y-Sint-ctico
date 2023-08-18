@@ -16,18 +16,19 @@ public class AnalizadorL {
     private int columnaT;
     private int lineaT;
     private String cadena;
+    private ArrayList<Token> tokens;
 
     public AnalizadorL() {
         expresion = new Expresion();
         lineaT = 0;
         columnaT = 0;
+        tokens = new ArrayList<>();
 
     }
 
     public ArrayList<Token> listarTokens() {
         lineaT = 0;
         columnaT = 0;
-        ArrayList<Token> tokens = new ArrayList<>();
         int columnaActual = 0;
         while (columnaActual < cadena.length()) {
             char charActual = cadena.charAt(columnaActual);
@@ -68,6 +69,7 @@ public class AnalizadorL {
                             } else {
                                 tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                             }
+                            
                         } else {
                             // Símbolo inválido después del identificador
                             //tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador + siguienteCaracter, identificador + siguienteCaracter));
@@ -81,22 +83,28 @@ public class AnalizadorL {
                                 tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                             }
                             columnaActual++;
+                            columnaT++;
                         }
                     } else {
                         // Fin de cadena después del identificador
                         if (expresion.validarLogico(identificador)) {
                             tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador, identificador));
+                            columnaT++;
                         } else if (expresion.validarKeywords(identificador)) {
                             tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador, identificador));
+                            columnaT++;
                         } else if (expresion.validarIdentificador(identificador)) {
                             tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador, expresion.getIdentificador()));
+                            columnaT++;
                         } else {
                             tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
+                            columnaT++;
                         }
                     }
                 } else {
                     // Identificador inválido
                     tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador, identificador));
+                    columnaT++;
                 }
             } else if (cadena.charAt(columnaActual) == '#') {
                 String identificador = "";
@@ -201,6 +209,8 @@ public class AnalizadorL {
 
     }
 
+    // me ayuda a verificar si hay un siguiente char sin que me salte una exception
+    
     private Boolean charSiguiente(String cadena, int columnaActual) {
         try {
             if (cadena.charAt((columnaActual + 1)) == '=') {
@@ -270,4 +280,9 @@ public class AnalizadorL {
         this.cadena = cadena;
     }
 
+    public ArrayList<Token> getTokens() {
+        return tokens;
+    }
+
+    
 }
