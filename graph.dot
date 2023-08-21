@@ -1,0 +1,5 @@
+digraph G {
+   node [shape = circle]
+   node [style = filled]
+   rankdir=LR
+4->\.->5->5}

@@ -7,25 +7,19 @@ package Frames;
 import com.mycompany.analizadorlexico.AnalizadorL;
 import com.mycompany.analizadorlexico.Archivo;
 import com.mycompany.analizadorlexico.Expresion;
+import com.mycompany.analizadorlexico.Grafica;
 import com.mycompany.analizadorlexico.Token;
+import com.mycompany.analizadorlexico.TokenId;
 import static com.mycompany.analizadorlexico.TokenId.IDENTIFICADOR;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
-
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
@@ -42,8 +36,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     private Archivo file;
     private AnalizadorL lexico;
     private Expresion expresion;
+    //private Graficador graficador;
 
     public FramePrincipal() {
+        //graficador = new Graficador();
+        //graficador.crearGrafos();
         expresion = new Expresion();
         file = new Archivo();
         lexico = new AnalizadorL();
@@ -209,6 +206,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         menuGenerarG.setText("Generar grafico");
+        menuGenerarG.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuGenerarGMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(menuGenerarG);
 
         menuAcercade.setText("Acerca de");
@@ -248,12 +250,20 @@ public class FramePrincipal extends javax.swing.JFrame {
         analizarTexto();
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void menuGenerarGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuGenerarGMouseClicked
+        this.setVisible(false);
+        Graficador graficador = new Graficador(this, lexico.getTokens());
+        graficador.setVisible(true);
+    }//GEN-LAST:event_menuGenerarGMouseClicked
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         FramePrincipal frame = new FramePrincipal();
         frame.setVisible(true);
+        Grafica grafica = new Grafica();
+        grafica.crearImagen(grafica.crearGrafos(new Token(0, 0, TokenId.CADENA, "4.55", "4.55")));
 
     }
 
