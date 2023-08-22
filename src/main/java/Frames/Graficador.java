@@ -73,7 +73,6 @@ public class Graficador extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(246, 244, 235));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -227,11 +226,8 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 220, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 0, 220, 550));
-
         labelTipo.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
         labelTipo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        getContentPane().add(labelTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(523, 6, 322, 35));
 
         limpiarLabel.setBackground(new java.awt.Color(70, 130, 169));
         limpiarLabel.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
@@ -251,17 +247,13 @@ public class Graficador extends javax.swing.JFrame {
                 limpiarLabelMouseExited(evt);
             }
         });
-        getContentPane().add(limpiarLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 18, 80, -1));
 
         imagenLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imagenLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane1.setViewportView(imagenLabel);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(269, 95, 888, 228));
-
         labelDatos.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
         labelDatos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        getContentPane().add(labelDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 72, 841, 17));
 
         jMenuBar1.setBackground(new java.awt.Color(70, 130, 169));
 
@@ -275,6 +267,41 @@ public class Graficador extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(254, 254, 254)
+                        .addComponent(labelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(215, 215, 215)
+                        .addComponent(limpiarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(labelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 895, Short.MAX_VALUE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(limpiarLabel)))
+                .addGap(31, 31, 31)
+                .addComponent(labelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

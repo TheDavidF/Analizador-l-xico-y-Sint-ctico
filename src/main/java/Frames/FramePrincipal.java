@@ -92,6 +92,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         textArea2 = new javax.swing.JTextPane();
         analizarLabel = new javax.swing.JLabel();
         limpiarJLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -116,12 +117,17 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText1.setMaximumSize(new java.awt.Dimension(16, 16));
         labelText1.setMinimumSize(new java.awt.Dimension(35, 16));
         labelText1.setOpaque(true);
-        jPanel1.add(labelText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 800, 20));
+        jPanel1.add(labelText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 800, 20));
 
         textArea1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        textArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textArea1KeyPressed(evt);
+            }
+        });
         Jscroll1.setViewportView(textArea1);
 
-        jPanel1.add(Jscroll1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 280));
+        jPanel1.add(Jscroll1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 330));
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -132,11 +138,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText2.setMaximumSize(new java.awt.Dimension(16, 16));
         labelText2.setMinimumSize(new java.awt.Dimension(34, 16));
         labelText2.setOpaque(true);
-        jPanel2.add(labelText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 790, 20));
+        jPanel2.add(labelText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 790, 20));
 
         jScrollPane2.setViewportView(textArea2);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 260));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 200));
 
         analizarLabel.setBackground(new java.awt.Color(70, 130, 169));
         analizarLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -174,20 +180,25 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
+        jLabel1.setText("Errores:");
+
         javax.swing.GroupLayout PanelPrincipalLayout = new javax.swing.GroupLayout(PanelPrincipal);
         PanelPrincipal.setLayout(PanelPrincipalLayout);
         PanelPrincipalLayout.setHorizontalGroup(
             PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelPrincipalLayout.createSequentialGroup()
                 .addGap(49, 49, 49)
-                .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(PanelPrincipalLayout.createSequentialGroup()
-                        .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(analizarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)))
+                .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(PanelPrincipalLayout.createSequentialGroup()
+                            .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(28, 28, 28)
+                            .addComponent(analizarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(10, 10, 10)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         PanelPrincipalLayout.setVerticalGroup(
@@ -198,10 +209,12 @@ public class FramePrincipal extends javax.swing.JFrame {
                     .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(analizarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         jMenuBar1.setBackground(new java.awt.Color(70, 130, 169));
@@ -300,13 +313,22 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_analizarLabelMouseEntered
 
     private void limpiarJLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarJLabelMouseExited
-        limpiarJLabel.setBackground(new Color(70,130,169));
-        
+        limpiarJLabel.setBackground(new Color(70, 130, 169));
+
     }//GEN-LAST:event_limpiarJLabelMouseExited
 
     private void analizarLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabelMouseExited
-        analizarLabel.setBackground(new Color(70,130,169));
+        analizarLabel.setBackground(new Color(70, 130, 169));
     }//GEN-LAST:event_analizarLabelMouseExited
+
+    private void textArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textArea1KeyPressed
+        try {
+            lexico.setCadena(textArea1.getText());
+            colorear(lexico.listarTokens());
+        } catch (Exception e) {
+            System.out.println("error");
+        }
+    }//GEN-LAST:event_textArea1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -335,7 +357,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.columna = columna;
     }
 
-    private void analizarTexto() { 
+    private void analizarTexto() {
         lexico.getTokens().clear();
         if (textArea1.getText().length() != 0) {
             String texto = textArea1.getText();
@@ -403,10 +425,14 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
 
             if (atributo != null) {
-                int start = calcularPosicionInicio(doc, token);
-                int length = token.getCadena().length();
+                ArrayList<Integer> posiciones = calcularPosicionInicio(doc, token);
+                for (Integer posicion : posiciones) {
+                    int start = posicion;
+                    int length = token.getCadena().length();
 
-                doc.setCharacterAttributes(start, length, atributo, false);
+                    doc.setCharacterAttributes(start, length, atributo, false);
+                }
+
             }
         }
 
@@ -416,16 +442,20 @@ public class FramePrincipal extends javax.swing.JFrame {
         return lexico;
     }
 
-    private int calcularPosicionInicio(StyledDocument doc, Token token) {
+    private ArrayList<Integer> calcularPosicionInicio(StyledDocument doc, Token token) {
+        ArrayList<Integer> posiciones = new ArrayList<>();
         try {
             String textoDocumento = doc.getText(0, doc.getLength());
             String tokenTexto = token.getCadena();
 
-            int inicioToken = textoDocumento.indexOf(tokenTexto);
-            return inicioToken;
+            int posicionInicio = -1;
+            while ((posicionInicio = textoDocumento.indexOf(tokenTexto, posicionInicio + 1)) != -1) {
+                posiciones.add(posicionInicio);
+            }
+            return posiciones;
         } catch (BadLocationException e) {
             e.printStackTrace();
-            return -1; // Manejo de error
+            return posiciones; // Manejo de error
         }
     }
 
@@ -434,6 +464,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JLabel analizarLabel;
     private javax.swing.JMenuItem generarReporte;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;

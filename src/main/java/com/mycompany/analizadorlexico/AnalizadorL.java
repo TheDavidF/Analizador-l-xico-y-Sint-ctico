@@ -109,7 +109,8 @@ public class AnalizadorL {
             } else if (cadena.charAt(columnaActual) == '#') {
                 String identificador = "";
                 while (columnaActual < cadena.length() && cadena.charAt(columnaActual) != '\n') {
-                    if(Character.isWhitespace(cadena.charAt(columnaActual)) &&  cadena.charAt(columnaActual+1) == '\n'){
+                    if(Character.isWhitespace(cadena.charAt(columnaActual)) &&  columnaActual == cadena.length() 
+                            || Character.isWhitespace(cadena.charAt(columnaActual)) &&  charSiguiente(cadena, columnaActual)){
                         break;
                     }
                     identificador += cadena.charAt(columnaActual);
@@ -132,18 +133,19 @@ public class AnalizadorL {
                     columnaT++;
                 }
                 while (columnaActual < cadena.length() && cadena.charAt(columnaActual) != '"' && cadena.charAt(columnaActual) != '\'') {
-                    if (columnaActual == (cadena.length() - 1)) {
+                    if (columnaActual == (cadena.length() - 1) || cadena.charAt(columnaActual) == '\n' || cadena.charAt(columnaActual) == '\r') {
                         break;
                     }
                     identificador += cadena.charAt(columnaActual);
                     columnaActual++;
                     columnaT++;
                 }
-                if (identificador.length() > 1) {
+                if (identificador.length() > 1 && cadena.charAt(columnaActual) != '\n' && cadena.charAt(columnaActual) != '\r') {
                     identificador += cadena.charAt(columnaActual);
                 }
                 columnaActual++;
                 columnaT++;
+                
                 if (expresion.validarCadena(identificador)) {
                     tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.CADENA, identificador, expresion.getCadena()));
                 } else {
@@ -213,7 +215,7 @@ public class AnalizadorL {
     
     private Boolean charSiguiente(String cadena, int columnaActual) {
         try {
-            if (cadena.charAt((columnaActual + 1)) == '=') {
+            if (cadena.charAt((columnaActual + 1)) == '=' || cadena.charAt((columnaActual + 1)) == '\n') {
                 return true;
             }
         } catch (Exception e) {

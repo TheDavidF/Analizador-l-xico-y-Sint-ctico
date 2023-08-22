@@ -51,10 +51,10 @@ public class Grafica {
                     grafo += "\""+"\\" + character + "\"";
                 } else if (index < lexema.length()) {
                 grafo += "\""+"\\" + character + "\"->";
-            }
+                }
             } else if(Character.isWhitespace(character)){
                 //Omite espacio
-            } else if (lexema.length() - 1 == index) {
+            } else if (lexema.length() - 1 == index || lexema.length() - 1 == index && validarSiguienteChar(lexema, index)) {
                 grafo += "\"" + character + "\"";
             } else if (index < lexema.length()) {
                 grafo += "\"" + character + "\"->";
@@ -229,6 +229,18 @@ public class Grafica {
         } else {
             return false;
         }
+    }
+    
+    public boolean validarSiguienteChar(String lexema, int index){
+        try {
+            if( Character.isWhitespace(lexema.charAt(index + 1) )){
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("punto nulo");
+            return false;
+        }
+        return false;
     }
 
 }
