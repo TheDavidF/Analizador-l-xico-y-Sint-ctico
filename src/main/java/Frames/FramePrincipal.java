@@ -47,7 +47,6 @@ public class FramePrincipal extends javax.swing.JFrame {
         initComponents();
         agregarEditor(textArea1, labelText1);
         agregarEditor(textArea2, labelText2);
-       
 
     }
 
@@ -82,8 +81,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
         PanelPrincipal = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         labelText1 = new javax.swing.JLabel();
@@ -93,7 +90,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         textArea2 = new javax.swing.JTextPane();
-        jLabel1 = new javax.swing.JLabel();
+        analizarLabel = new javax.swing.JLabel();
+        limpiarJLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -103,15 +101,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         menuAcercade = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        jPopupMenu1.setBackground(new java.awt.Color(145, 200, 228));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(153, 204, 255));
+        setBackground(new java.awt.Color(246, 244, 235));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 200));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -145,14 +138,39 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 260));
 
-        jLabel1.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel1.setText("   Analizar");
-        jLabel1.setOpaque(true);
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        analizarLabel.setBackground(new java.awt.Color(70, 130, 169));
+        analizarLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        analizarLabel.setForeground(new java.awt.Color(204, 204, 204));
+        analizarLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        analizarLabel.setText("Analizar");
+        analizarLabel.setOpaque(true);
+        analizarLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                analizarLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                analizarLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                analizarLabelMouseExited(evt);
+            }
+        });
+
+        limpiarJLabel.setBackground(new java.awt.Color(70, 130, 169));
+        limpiarJLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        limpiarJLabel.setForeground(new java.awt.Color(204, 204, 204));
+        limpiarJLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        limpiarJLabel.setText("Limpiar");
+        limpiarJLabel.setOpaque(true);
+        limpiarJLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                limpiarJLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                limpiarJLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                limpiarJLabelMouseExited(evt);
             }
         });
 
@@ -162,25 +180,33 @@ public class FramePrincipal extends javax.swing.JFrame {
             PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelPrincipalLayout.createSequentialGroup()
                 .addGap(49, 49, 49)
-                .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(PanelPrincipalLayout.createSequentialGroup()
+                        .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(analizarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
         PanelPrincipalLayout.setVerticalGroup(
             PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelPrincipalLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(analizarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
+        jMenuBar1.setBackground(new java.awt.Color(70, 130, 169));
+
+        menuArchivo.setForeground(new java.awt.Color(246, 244, 235));
         menuArchivo.setText("Archivo");
 
         jMenuItem1.setText("Subir Archivo");
@@ -193,6 +219,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuArchivo);
 
+        jMenu1.setForeground(new java.awt.Color(246, 244, 235));
         jMenu1.setText("Reporte");
 
         generarReporte.setText("Generar Reporte");
@@ -205,6 +232,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        menuGenerarG.setForeground(new java.awt.Color(246, 244, 235));
         menuGenerarG.setText("Generar grafico");
         menuGenerarG.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -213,6 +241,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(menuGenerarG);
 
+        menuAcercade.setForeground(new java.awt.Color(246, 244, 235));
         menuAcercade.setText("Acerca de");
 
         menuAyuda.setText("Ayuda");
@@ -246,15 +275,38 @@ public class FramePrincipal extends javax.swing.JFrame {
         reporte.setVisible(true);
     }//GEN-LAST:event_generarReporteActionPerformed
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void analizarLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabelMouseClicked
         analizarTexto();
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_analizarLabelMouseClicked
 
     private void menuGenerarGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuGenerarGMouseClicked
         this.setVisible(false);
         Graficador graficador = new Graficador(this, lexico.getTokens());
         graficador.setVisible(true);
     }//GEN-LAST:event_menuGenerarGMouseClicked
+
+    private void limpiarJLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarJLabelMouseClicked
+        textArea1.setText("");
+        textArea2.setText("");
+        lexico.getTokens().clear();
+    }//GEN-LAST:event_limpiarJLabelMouseClicked
+
+    private void limpiarJLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarJLabelMouseEntered
+        limpiarJLabel.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_limpiarJLabelMouseEntered
+
+    private void analizarLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabelMouseEntered
+        analizarLabel.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_analizarLabelMouseEntered
+
+    private void limpiarJLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarJLabelMouseExited
+        limpiarJLabel.setBackground(new Color(70,130,169));
+        
+    }//GEN-LAST:event_limpiarJLabelMouseExited
+
+    private void analizarLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabelMouseExited
+        analizarLabel.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_analizarLabelMouseExited
 
     /**
      * @param args the command line arguments
@@ -263,7 +315,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         FramePrincipal frame = new FramePrincipal();
         frame.setVisible(true);
         Grafica grafica = new Grafica();
-        grafica.crearImagen(grafica.crearGrafos(new Token(0, 0, TokenId.CADENA, "4.55", "4.55")));
+        //grafica.crearImagen(grafica.crearGrafos(new Token(0, 0, TokenId.CADENA, "def", "4.55")));
 
     }
 
@@ -283,8 +335,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         this.columna = columna;
     }
 
-    private void analizarTexto() {
-        textArea2.setText("");
+    private void analizarTexto() { 
+        lexico.getTokens().clear();
         if (textArea1.getText().length() != 0) {
             String texto = textArea1.getText();
             lexico.setCadena(texto);
@@ -364,8 +416,6 @@ public class FramePrincipal extends javax.swing.JFrame {
         return lexico;
     }
 
-    
-
     private int calcularPosicionInicio(StyledDocument doc, Token token) {
         try {
             String textoDocumento = doc.getText(0, doc.getLength());
@@ -375,26 +425,25 @@ public class FramePrincipal extends javax.swing.JFrame {
             return inicioToken;
         } catch (BadLocationException e) {
             e.printStackTrace();
-            return -1; // Manejo de erroro
+            return -1; // Manejo de error
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane Jscroll1;
     private javax.swing.JPanel PanelPrincipal;
+    private javax.swing.JLabel analizarLabel;
     private javax.swing.JMenuItem generarReporte;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelText1;
     private javax.swing.JLabel labelText2;
+    private javax.swing.JLabel limpiarJLabel;
     private javax.swing.JMenu menuAcercade;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;

@@ -2,4 +2,4 @@ digraph G {
    node [shape = circle]
    node [style = filled]
    rankdir=LR
-4->\.->5->5}
+"m"->"i"->"I"->"d"->"e"->"n"->"t"->"i"->"f"->"i"->"c"->"a"->"d"->"o"->"r"}

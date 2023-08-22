@@ -57,6 +57,7 @@ public class Reporte extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reporte");
+        setBackground(new java.awt.Color(246, 244, 235));
 
         jPanel1.setMaximumSize(new java.awt.Dimension(871, 716));
         jPanel1.setMinimumSize(new java.awt.Dimension(871, 716));

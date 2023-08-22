@@ -4,10 +4,21 @@
  */
 package Frames;
 
+import com.mycompany.analizadorlexico.Expresion;
+import com.mycompany.analizadorlexico.Grafica;
 import com.mycompany.analizadorlexico.Token;
 import com.mycompany.analizadorlexico.TokenId;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -20,9 +31,13 @@ public class Graficador extends javax.swing.JFrame {
 
     private FramePrincipal frame;
     private ArrayList<Token> tokens;
+    private Grafica grafica;
+    private Expresion expresion;
 
     public Graficador(FramePrincipal frame, ArrayList<Token> tokens) {
         initComponents();
+        expresion = new Expresion();
+        grafica = new Grafica();
         this.frame = frame;
         this.tokens = tokens;
     }
@@ -46,18 +61,30 @@ public class Graficador extends javax.swing.JFrame {
         label7 = new javax.swing.JLabel();
         label9 = new javax.swing.JLabel();
         label8 = new javax.swing.JLabel();
+        label11 = new javax.swing.JLabel();
+        label10 = new javax.swing.JLabel();
+        labelTipo = new javax.swing.JLabel();
+        limpiarLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        imagenLabel = new javax.swing.JLabel();
+        labelDatos = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(246, 244, 235));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        label1.setBackground(new java.awt.Color(70, 130, 169));
         label1.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label1.setForeground(new java.awt.Color(246, 244, 235));
         label1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label1.setText("Operadores Aritméticos");
         label1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label1.setOpaque(true);
         label1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label1MouseClicked(evt);
@@ -65,16 +92,22 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 50));
 
+        label3.setBackground(new java.awt.Color(70, 130, 169));
         label3.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label3.setForeground(new java.awt.Color(246, 244, 235));
         label3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label3.setText("Operadores Lógicos");
         label3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label3.setOpaque(true);
         jPanel1.add(label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 220, 50));
 
+        label2.setBackground(new java.awt.Color(70, 130, 169));
         label2.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label2.setForeground(new java.awt.Color(246, 244, 235));
         label2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label2.setText("Operadores de Comparación");
         label2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label2.setOpaque(true);
         label2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label2MouseClicked(evt);
@@ -82,10 +115,13 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 220, 50));
 
+        label4.setBackground(new java.awt.Color(70, 130, 169));
         label4.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label4.setForeground(new java.awt.Color(246, 244, 235));
         label4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label4.setText("Asignadores");
         label4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label4.setOpaque(true);
         label4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label4MouseClicked(evt);
@@ -93,10 +129,13 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 220, 50));
 
+        label5.setBackground(new java.awt.Color(70, 130, 169));
         label5.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label5.setForeground(new java.awt.Color(246, 244, 235));
         label5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label5.setText("Palabras Clave");
         label5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label5.setOpaque(true);
         label5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label5MouseClicked(evt);
@@ -104,10 +143,13 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 220, 50));
 
+        label6.setBackground(new java.awt.Color(70, 130, 169));
         label6.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label6.setForeground(new java.awt.Color(246, 244, 235));
         label6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        label6.setText("Constantes");
+        label6.setText("Enteros");
         label6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label6.setOpaque(true);
         label6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label6MouseClicked(evt);
@@ -115,10 +157,13 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 220, 50));
 
+        label7.setBackground(new java.awt.Color(70, 130, 169));
         label7.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label7.setForeground(new java.awt.Color(246, 244, 235));
         label7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label7.setText("Identificadores");
         label7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label7.setOpaque(true);
         label7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label7MouseClicked(evt);
@@ -126,10 +171,13 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 220, 50));
 
+        label9.setBackground(new java.awt.Color(70, 130, 169));
         label9.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label9.setForeground(new java.awt.Color(246, 244, 235));
         label9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label9.setText("Otros");
         label9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label9.setOpaque(true);
         label9.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label9MouseClicked(evt);
@@ -137,10 +185,13 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 220, 50));
 
+        label8.setBackground(new java.awt.Color(70, 130, 169));
         label8.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label8.setForeground(new java.awt.Color(246, 244, 235));
         label8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label8.setText("Comentarios");
         label8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label8.setOpaque(true);
         label8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label8MouseClicked(evt);
@@ -148,6 +199,73 @@ public class Graficador extends javax.swing.JFrame {
         });
         jPanel1.add(label8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 220, 50));
 
+        label11.setBackground(new java.awt.Color(70, 130, 169));
+        label11.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label11.setForeground(new java.awt.Color(246, 244, 235));
+        label11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label11.setText("Cadenas");
+        label11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label11.setOpaque(true);
+        label11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                label11MouseClicked(evt);
+            }
+        });
+        jPanel1.add(label11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 220, 50));
+
+        label10.setBackground(new java.awt.Color(70, 130, 169));
+        label10.setFont(new java.awt.Font("Trebuchet MS", 2, 16)); // NOI18N
+        label10.setForeground(new java.awt.Color(246, 244, 235));
+        label10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        label10.setText("Decimales");
+        label10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        label10.setOpaque(true);
+        label10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                label10MouseClicked(evt);
+            }
+        });
+        jPanel1.add(label10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 220, 50));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 0, 220, 550));
+
+        labelTipo.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        labelTipo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(labelTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(523, 6, 322, 35));
+
+        limpiarLabel.setBackground(new java.awt.Color(70, 130, 169));
+        limpiarLabel.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
+        limpiarLabel.setForeground(new java.awt.Color(246, 244, 235));
+        limpiarLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        limpiarLabel.setText("Limpiar ");
+        limpiarLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        limpiarLabel.setOpaque(true);
+        limpiarLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                limpiarLabelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                limpiarLabelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                limpiarLabelMouseExited(evt);
+            }
+        });
+        getContentPane().add(limpiarLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 18, 80, -1));
+
+        imagenLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagenLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane1.setViewportView(imagenLabel);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(269, 95, 888, 228));
+
+        labelDatos.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
+        labelDatos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(labelDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 72, 841, 17));
+
+        jMenuBar1.setBackground(new java.awt.Color(70, 130, 169));
+
+        jMenu1.setForeground(new java.awt.Color(246, 244, 235));
         jMenu1.setText("Volver");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -157,23 +275,6 @@ public class Graficador extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(841, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -216,30 +317,150 @@ public class Graficador extends javax.swing.JFrame {
         agregarItems(TokenId.OTROS_OPERADORES, label9);
     }//GEN-LAST:event_label9MouseClicked
 
+    private void label10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label10MouseClicked
+        agregarItems(TokenId.DECIMAL, label10);
+    }//GEN-LAST:event_label10MouseClicked
+
+    private void label11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label11MouseClicked
+        agregarItems(TokenId.CADENA, label11);
+    }//GEN-LAST:event_label11MouseClicked
+
+    private void limpiarLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarLabelMouseClicked
+        imagenLabel.setIcon(null);
+        imagenLabel.revalidate();
+        imagenLabel.repaint();
+        System.out.println("se limpio el label");
+        labelTipo.setText("");
+        labelDatos.setText("");
+    }//GEN-LAST:event_limpiarLabelMouseClicked
+
+    private void limpiarLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarLabelMouseEntered
+        limpiarLabel.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_limpiarLabelMouseEntered
+
+    private void limpiarLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarLabelMouseExited
+        limpiarLabel.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_limpiarLabelMouseExited
+
     private void agregarItems(TokenId id, JLabel label) {
         JPopupMenu popupMenu = new JPopupMenu();
-        ArrayList<JMenuItem> items = new ArrayList<>();
+        ArrayList<ItemMenu> items = new ArrayList<>();
         for (Token token : tokens) {
             if (token.getId() == id) {
-                items.add(new JMenuItem(token.getCadena()));
+                items.add(new ItemMenu(token, token.getCadena()));
             }
         }
 
-        for (JMenuItem item : items) {
+        for (ItemMenu item : items) {
             if (item != null) {
                 popupMenu.add(item);
+                //itemClicked(new MouseEvent(frame, WIDTH, WIDTH, ICONIFIED, WIDTH, WIDTH, HEIGHT, rootPaneCheckingEnabled), item);
+                item.addActionListener((ActionEvent e) -> {
+                    itemClicked(item);
+                });
             }
         }
         popupMenu.show(label, 215, 0);
-        
+
     }
 
+    private void itemClicked(ItemMenu item) {
+        String cadena = item.getText();
+        //labelTipo.setIcon(null);
+        if (!validarExpresion(cadena)) {
+            labelTipo.setText("Error léxico");
+            grafica.crearImagen(grafica.crearGrafos(cadena));
+            String path = "grafica.png";
+            BufferedImage nuevaImagen = loadImage(path);
+            if (nuevaImagen != null) {
+                ImageIcon imagenIcon = new ImageIcon(nuevaImagen);
+                imagenLabel.setIcon(imagenIcon);
+                imagenLabel.revalidate();
+                imagenLabel.repaint();
+            }
+            String texto = "Lexema: "+item.getToken().getCadena()+"  Linea: "+item.getToken().getLinea()+"  Columna: "+item.getToken().getColumna();
+            labelDatos.setText(texto);
+        } else {
+            grafica.crearImagen(grafica.crearGrafos(cadena));
+            String path = "grafica.png";
+            BufferedImage nuevaImagen = loadImage(path);
+            if (nuevaImagen != null) {
+                ImageIcon imagenIcon = new ImageIcon(nuevaImagen);
+                imagenLabel.setIcon(imagenIcon);
+                imagenLabel.revalidate();
+                imagenLabel.repaint();
+            }
+            String texto = "Lexema: "+item.getToken().getCadena()+"  Linea: "+item.getToken().getLinea()+"  Columna: "+item.getToken().getColumna();
+            labelDatos.setText(texto);
+        }
+
+    }
+
+    private BufferedImage loadImage(String path) {
+        try {
+            return ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private boolean validarExpresion(String cadena) {
+        if (expresion.validarAsignacion(cadena)) {
+            labelTipo.setText("Operador Asignador");
+            return true;
+        } else if (expresion.validarBoleano(cadena)) {
+            labelTipo.setText("Booleano");
+            return true;
+        } else if (expresion.validarCadena(cadena)) {
+            labelTipo.setText("Cadena");
+            return true;
+        } else if (expresion.validarComentario(cadena)) {
+            labelTipo.setText("Comentario");
+            return true;
+        } else if (expresion.validarComparador(cadena)) {
+            labelTipo.setText("Operador Comparador");
+            return true;
+        } else if (expresion.validarDecimal(cadena)) {
+            labelTipo.setText("Decimal");
+            return true;
+        } else if (expresion.validarEntero(cadena)) {
+            labelTipo.setText("Entero");
+            return true;
+        } else if (expresion.validarIdentificador(cadena)) {
+            labelTipo.setText("Identificador");
+            return true;
+        } else if (expresion.validarKeywords(cadena)) {
+            labelTipo.setText("Palabbra Clave");
+            return true;
+        } else if (expresion.validarLogico(cadena)) {
+            labelTipo.setText("Operador Lógico");
+            return true;
+        } else if (expresion.validarOperador(cadena)) {
+            labelTipo.setText("Operador");
+            return true;
+        } else if (expresion.validarBoleano(cadena)) {
+            labelTipo.setText("Booleano");
+            return true;
+        } else if (expresion.validarSignos(cadena)) {
+            labelTipo.setText("signo");
+            return true;
+        } else if (expresion.validarSignos(cadena)) {
+            labelTipo.setText("Otros Operadores");
+            return true;
+        }
+        return false;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel imagenLabel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel label1;
+    private javax.swing.JLabel label10;
+    private javax.swing.JLabel label11;
     private javax.swing.JLabel label2;
     private javax.swing.JLabel label3;
     private javax.swing.JLabel label4;
@@ -248,5 +469,8 @@ public class Graficador extends javax.swing.JFrame {
     private javax.swing.JLabel label7;
     private javax.swing.JLabel label8;
     private javax.swing.JLabel label9;
+    private javax.swing.JLabel labelDatos;
+    private javax.swing.JLabel labelTipo;
+    private javax.swing.JLabel limpiarLabel;
     // End of variables declaration//GEN-END:variables
 }

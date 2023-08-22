@@ -197,7 +197,7 @@ public class AnalizadorL {
                 if (expresion.validarSignos(identificador)) {
                     tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.OTROS_OPERADORES, identificador, identificador));
                 } else if (expresion.validarOperador(identificador)) {
-                    tokens.add(new Token((lineaT + 1), columnaActual, TokenId.OPERADOR_ASIGNADOR, identificador, identificador));
+                    tokens.add(new Token((lineaT + 1), columnaActual, TokenId.OPERADOR_ARITMETICO, identificador, identificador));
                 } else {
                     tokens.add(new Token((lineaT + 1), (columnaActual + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                 }
@@ -283,6 +283,12 @@ public class AnalizadorL {
     public ArrayList<Token> getTokens() {
         return tokens;
     }
+
+    public void setTokens(ArrayList<Token> tokens) {
+        this.tokens = tokens;
+    }
+    
+    
 
     
 }
