@@ -72,7 +72,7 @@ public class Graficador extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(246, 244, 235));
+        setBackground(new java.awt.Color(175, 211, 226));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -88,6 +88,12 @@ public class Graficador extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label1MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label1MouseExited(evt);
+            }
         });
         jPanel1.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 50));
 
@@ -98,6 +104,14 @@ public class Graficador extends javax.swing.JFrame {
         label3.setText("Operadores Lógicos");
         label3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         label3.setOpaque(true);
+        label3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label3MouseExited(evt);
+            }
+        });
         jPanel1.add(label3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 220, 50));
 
         label2.setBackground(new java.awt.Color(70, 130, 169));
@@ -110,6 +124,12 @@ public class Graficador extends javax.swing.JFrame {
         label2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label2MouseExited(evt);
             }
         });
         jPanel1.add(label2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 220, 50));
@@ -125,6 +145,12 @@ public class Graficador extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label4MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label4MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label4MouseExited(evt);
+            }
         });
         jPanel1.add(label4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 220, 50));
 
@@ -138,6 +164,12 @@ public class Graficador extends javax.swing.JFrame {
         label5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label5MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label5MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label5MouseExited(evt);
             }
         });
         jPanel1.add(label5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 220, 50));
@@ -153,6 +185,12 @@ public class Graficador extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label6MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label6MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label6MouseExited(evt);
+            }
         });
         jPanel1.add(label6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 220, 50));
 
@@ -166,6 +204,12 @@ public class Graficador extends javax.swing.JFrame {
         label7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label7MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label7MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label7MouseExited(evt);
             }
         });
         jPanel1.add(label7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 220, 50));
@@ -181,6 +225,12 @@ public class Graficador extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label9MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label9MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label9MouseExited(evt);
+            }
         });
         jPanel1.add(label9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 220, 50));
 
@@ -194,6 +244,12 @@ public class Graficador extends javax.swing.JFrame {
         label8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label8MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label8MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label8MouseExited(evt);
             }
         });
         jPanel1.add(label8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 220, 50));
@@ -209,6 +265,12 @@ public class Graficador extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label11MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label11MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label11MouseExited(evt);
+            }
         });
         jPanel1.add(label11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 220, 50));
 
@@ -222,6 +284,12 @@ public class Graficador extends javax.swing.JFrame {
         label10.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 label10MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                label10MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                label10MouseExited(evt);
             }
         });
         jPanel1.add(label10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 220, 50));
@@ -368,6 +436,94 @@ public class Graficador extends javax.swing.JFrame {
     private void limpiarLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarLabelMouseExited
         limpiarLabel.setBackground(new Color(70,130,169));
     }//GEN-LAST:event_limpiarLabelMouseExited
+
+    private void label1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label1MouseEntered
+       label1.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label1MouseEntered
+
+    private void label1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label1MouseExited
+        label1.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label1MouseExited
+
+    private void label2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label2MouseEntered
+        label2.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label2MouseEntered
+
+    private void label2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label2MouseExited
+        label2.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label2MouseExited
+
+    private void label3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label3MouseEntered
+        label3.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label3MouseEntered
+
+    private void label3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label3MouseExited
+        label3.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label3MouseExited
+
+    private void label4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label4MouseEntered
+        label4.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label4MouseEntered
+
+    private void label4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label4MouseExited
+       label4.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label4MouseExited
+
+    private void label5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label5MouseEntered
+        label5.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label5MouseEntered
+
+    private void label5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label5MouseExited
+        label5.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label5MouseExited
+
+    private void label6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label6MouseEntered
+        label6.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label6MouseEntered
+
+    private void label6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label6MouseExited
+        label6.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label6MouseExited
+
+    private void label7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label7MouseEntered
+        label7.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label7MouseEntered
+
+    private void label7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label7MouseExited
+        label7.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label7MouseExited
+
+    private void label8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label8MouseEntered
+        label8.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label8MouseEntered
+
+    private void label8MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label8MouseExited
+        label8.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label8MouseExited
+
+    private void label9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label9MouseEntered
+        label9.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label9MouseEntered
+
+    private void label9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label9MouseExited
+        label9.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label9MouseExited
+
+    private void label10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label10MouseEntered
+        label10.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label10MouseEntered
+
+    private void label10MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label10MouseExited
+        label10.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label10MouseExited
+
+    private void label11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label11MouseEntered
+        label1.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_label11MouseEntered
+
+    private void label11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label11MouseExited
+        label11.setBackground(new Color(70,130,169));
+    }//GEN-LAST:event_label11MouseExited
 
     private void agregarItems(TokenId id, JLabel label) {
         JPopupMenu popupMenu = new JPopupMenu();

@@ -24,9 +24,6 @@ import java.util.ArrayList;
  */
 public class Grafica {
 
-    private MutableGraph grafo;
-    private ArrayList<Token> tokens;
-    private Token token;
 
     public Grafica() {
     }
@@ -40,8 +37,7 @@ public class Grafica {
             a++;
         }
         String dotCode = "digraph G {\n"
-                + "   node [shape = circle]\n"
-                + "   node [style = filled]\n"
+                + "   node [shape = circle, style = filled, fillcolor = lightblue]\n"
                 + "   rankdir=LR\n";
         int index = 0;
         String grafo = "";
@@ -76,7 +72,7 @@ public class Grafica {
     }
 
     public void crearImagen(String dotCode) {
-        String formato = "png"; // Puedes usar otros formatos como svg, pdf, etc.
+        String formato = "png"; 
         String nombreImagen = "grafica." + formato;
 
         try {
@@ -94,143 +90,6 @@ public class Grafica {
         }
     }
 
-    private void formarNodo(char character, String lexema, String grafo, int i) {
-
-        switch (character) {
-            case '.':
-                if (lexema.length() - 1 == i) {
-                    if (character == '.') {
-                        grafo += "\".\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '.') {
-                        grafo += "" + "\".\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-
-                }
-                i++;
-                break;
-            case '+':
-                if (lexema.length() - 1 == i) {
-                    if (character == '+') {
-                        grafo += "\"+\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '+') {
-                        grafo += "" + "\"+\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-                }
-                i++;
-                break;
-            case '_':
-                if (lexema.length() - 1 == i) {
-                    if (character == '_') {
-                        grafo += "\"_\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '_') {
-                        grafo += "" + "\"_\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-                }
-                i++;
-                break;
-            case '*':
-                if (lexema.length() - 1 == i) {
-                    if (character == '_') {
-                        grafo += "\"*\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '*') {
-                        grafo += "" + "\"*\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-                }
-                i++;
-                break;
-            case '/':
-                if (lexema.length() - 1 == i) {
-                    if (character == '/') {
-                        grafo += "\"_\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '_') {
-                        grafo += "" + "\"_\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-                }
-                i++;
-                break;
-            case '-':
-                if (lexema.length() - 1 == i) {
-                    if (character == '-') {
-                        grafo += "\"-\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '-') {
-                        grafo += "" + "\"-\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-                }
-                i++;
-                break;
-            case '%':
-                if (lexema.length() - 1 == i) {
-                    if (character == '%') {
-                        grafo += "\"%\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '%') {
-                        grafo += "" + "\"%\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-                }
-                i++;
-                break;
-            case '#':
-                if (lexema.length() - 1 == i) {
-                    if (character == '#') {
-                        grafo += "\"#\"";
-                    }
-                    grafo += character;
-                } else if (i < lexema.length()) {
-                    if (character == '#') {
-                        grafo += "" + "\"#\"" + "->";
-                    } else {
-                        grafo += "" + character + "->";
-                    }
-                }
-                i++;
-                break;
-            default:
-                throw new AssertionError();
-        }
-    }
-
-    private boolean esSigno(char c) {
-        if (c == '.' || c == '_' || c == '*' | c == '/' || c == '+' || c == '-' || c == '#') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
     public boolean validarSiguienteChar(String lexema, int index){
         try {
             if( Character.isWhitespace(lexema.charAt(index + 1) )){

@@ -107,6 +107,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(246, 244, 235));
 
+        PanelPrincipal.setBackground(new java.awt.Color(175, 211, 226));
+
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 200));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -119,6 +121,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText1.setOpaque(true);
         jPanel1.add(labelText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 800, 20));
 
+        textArea1.setBackground(new java.awt.Color(246, 244, 235));
         textArea1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         textArea1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -140,13 +143,14 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText2.setOpaque(true);
         jPanel2.add(labelText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 790, 20));
 
+        textArea2.setBackground(new java.awt.Color(246, 244, 235));
         jScrollPane2.setViewportView(textArea2);
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 200));
 
         analizarLabel.setBackground(new java.awt.Color(70, 130, 169));
         analizarLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
-        analizarLabel.setForeground(new java.awt.Color(204, 204, 204));
+        analizarLabel.setForeground(new java.awt.Color(246, 244, 235));
         analizarLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         analizarLabel.setText("Analizar");
         analizarLabel.setOpaque(true);
@@ -164,7 +168,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         limpiarJLabel.setBackground(new java.awt.Color(70, 130, 169));
         limpiarJLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
-        limpiarJLabel.setForeground(new java.awt.Color(204, 204, 204));
+        limpiarJLabel.setForeground(new java.awt.Color(246, 244, 235));
         limpiarJLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         limpiarJLabel.setText("Limpiar");
         limpiarJLabel.setOpaque(true);
@@ -330,16 +334,6 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_textArea1KeyPressed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        FramePrincipal frame = new FramePrincipal();
-        frame.setVisible(true);
-        Grafica grafica = new Grafica();
-        //grafica.crearImagen(grafica.crearGrafos(new Token(0, 0, TokenId.CADENA, "def", "4.55")));
-
-    }
 
     public int getLinea() {
         return linea;
@@ -414,10 +408,10 @@ public class FramePrincipal extends javax.swing.JFrame {
                     atributo = colorVerde;
                     break;
                 case ERROR_LEXICO:
-                    atributo = colorRojo;
+                    atributo = colorVerde;
                     break;
                 case CADENA:
-                    atributo = colorVerde;
+                    atributo = colorAnaranjado;
                     break;
                 default:
                     //throw new AssertionError();

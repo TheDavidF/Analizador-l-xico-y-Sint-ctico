@@ -59,11 +59,12 @@ public class Reporte extends javax.swing.JFrame {
         setTitle("Reporte");
         setBackground(new java.awt.Color(246, 244, 235));
 
+        jPanel1.setBackground(new java.awt.Color(175, 211, 226));
         jPanel1.setMaximumSize(new java.awt.Dimension(871, 716));
         jPanel1.setMinimumSize(new java.awt.Dimension(871, 716));
         jPanel1.setPreferredSize(new java.awt.Dimension(871, 716));
 
-        labelReportes.setBackground(new java.awt.Color(102, 102, 102));
+        labelReportes.setBackground(new java.awt.Color(70, 130, 169));
         labelReportes.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         labelReportes.setForeground(new java.awt.Color(255, 255, 255));
         labelReportes.setText("     Volver");
@@ -75,6 +76,7 @@ public class Reporte extends javax.swing.JFrame {
             }
         });
 
+        tablaRep.setBackground(new java.awt.Color(246, 244, 235));
         tablaRep.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
