@@ -1,4 +1,4 @@
 digraph G {
    node [shape = circle, style = filled, fillcolor = lightblue]
    rankdir=LR
-"."}
+"d"->"e"->"f"}

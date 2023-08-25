@@ -33,10 +33,12 @@ public class AnalizadorL {
         while (columnaActual < cadena.length()) {
             char charActual = cadena.charAt(columnaActual);
             String saltoLinea = "";
-            if (charSiguiente(cadena, columnaActual) && cadena.charAt(columnaActual) == '\r') {
+            if (cadena.charAt(columnaActual) == '\n' || cadena.charAt(columnaActual) == '\r') {
                 columnaT = 0;
                 columnaActual++;
-                lineaT++;
+                if(cadena.charAt(columnaActual) == '\n'){
+                    lineaT++;
+                }
             } else if (Character.isWhitespace(charActual)) {
                 columnaActual++;
                 columnaT++;
@@ -60,7 +62,7 @@ public class AnalizadorL {
                 } else if (expresion.validarLogico(identificador)) {
                     tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador, identificador));
                 } else if (expresion.validarIdentificador(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.IDENTIFICADOR, identificador, identificador));
+                    tokens.add(new Token((lineaT + 1), (columnaT), TokenId.IDENTIFICADOR, identificador, identificador));
                 } else {
                     // Identificador inválido
                     tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));

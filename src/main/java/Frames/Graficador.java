@@ -518,7 +518,7 @@ public class Graficador extends javax.swing.JFrame {
     }//GEN-LAST:event_label10MouseExited
 
     private void label11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label11MouseEntered
-        label1.setBackground(new Color(116, 155, 194));
+        label11.setBackground(new Color(116, 155, 194));
     }//GEN-LAST:event_label11MouseEntered
 
     private void label11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label11MouseExited

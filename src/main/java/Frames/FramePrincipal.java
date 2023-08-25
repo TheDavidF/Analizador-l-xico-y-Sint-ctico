@@ -352,6 +352,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     private void analizarTexto() {
+        textArea2.setText("");
         lexico.getTokens().clear();
         if (textArea1.getText().length() != 0) {
             String texto = textArea1.getText();
@@ -363,8 +364,17 @@ public class FramePrincipal extends javax.swing.JFrame {
                 analisis += "identificador :" + token.getId() + " Lexema: " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() + "\n";
                 //analisis += token;
             }
-            textArea2.setText(analisis);
-            System.out.println("es comentario? " + expresion.validarComentario(texto));
+            String errores = "";
+            for (Token token : tokens) {
+                if(token.getId() == TokenId.ERROR_LEXICO){
+                    errores = "------Analisis completo------\n";
+                    errores += "Error cadena no reconocida "+token.getCadena()  +" en la Linea: " + token.getLinea()+ "   Y Columna:" + token.getColumna() + "\n";   
+                } else {
+                    errores ="------Analisis completo, no se encontraron errores------";
+                }
+            }
+            textArea2.setText(errores);
+           
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
         }
