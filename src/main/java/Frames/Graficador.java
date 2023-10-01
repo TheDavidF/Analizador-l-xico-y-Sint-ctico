@@ -400,8 +400,7 @@ public class Graficador extends javax.swing.JFrame {
     }//GEN-LAST:event_label5MouseClicked
 
     private void label6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label6MouseClicked
-        agregarItems(TokenId.ENTERO, label6);
-        //agregarItems(TokenId.DECIMAL, label6);
+        agregarItems(TokenId.CONSTANTE, label6);
     }//GEN-LAST:event_label6MouseClicked
 
     private void label8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label8MouseClicked
@@ -413,11 +412,11 @@ public class Graficador extends javax.swing.JFrame {
     }//GEN-LAST:event_label9MouseClicked
 
     private void label10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label10MouseClicked
-        agregarItems(TokenId.DECIMAL, label10);
+        agregarItems(TokenId.CONSTANTE, label10);
     }//GEN-LAST:event_label10MouseClicked
 
     private void label11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label11MouseClicked
-        agregarItems(TokenId.CADENA, label11);
+        agregarItems(TokenId.CONSTANTE, label11);
     }//GEN-LAST:event_label11MouseClicked
 
     private void limpiarLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarLabelMouseClicked

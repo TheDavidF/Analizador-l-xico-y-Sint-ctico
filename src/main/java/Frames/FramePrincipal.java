@@ -11,6 +11,7 @@ import com.mycompany.analizadorlexico.Grafica;
 import com.mycompany.analizadorlexico.Token;
 import com.mycompany.analizadorlexico.TokenId;
 import static com.mycompany.analizadorlexico.TokenId.IDENTIFICADOR;
+import com.mycompany.analizadorsintactico.AnalizadorS;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -326,12 +327,12 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_analizarLabelMouseExited
 
     private void textArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textArea1KeyPressed
-        try {
-            lexico.setCadena(textArea1.getText());
-            colorear(lexico.listarTokens());
-        } catch (Exception e) {
-            System.out.println("error");
-        }
+        //try {
+        //    lexico.setCadena(textArea1.getText());
+        //    colorear(lexico.listarTokens());
+        //} catch (Exception e) {
+        //   System.out.println("error");
+        //} 
     }//GEN-LAST:event_textArea1KeyPressed
 
 
@@ -365,6 +366,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
             textArea2.setText(analisis);
             System.out.println("es comentario? " + expresion.validarComentario(texto));
+            analizarS();
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
         }
@@ -398,7 +400,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 case PALABRA_RESERVADA:
                     atributo = colorMorado;
                     break;
-                case ENTERO, DECIMAL:
+                case CONSTANTE:
                     atributo = colorAnaranjado;
                     break;
                 case COMENTARIO:
@@ -409,9 +411,6 @@ public class FramePrincipal extends javax.swing.JFrame {
                     break;
                 case ERROR_LEXICO:
                     atributo = colorVerde;
-                    break;
-                case CADENA:
-                    atributo = colorAnaranjado;
                     break;
                 default:
                     //throw new AssertionError();
@@ -430,6 +429,11 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         }
 
+    }
+    
+    private void analizarS(){
+        AnalizadorS analizadorS = new AnalizadorS(lexico.getTokens());
+        analizadorS.analizador();
     }
 
     public AnalizadorL getLexico() {
