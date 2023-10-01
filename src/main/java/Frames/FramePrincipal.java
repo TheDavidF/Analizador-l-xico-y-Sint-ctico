@@ -365,7 +365,6 @@ public class FramePrincipal extends javax.swing.JFrame {
                 analisis += "identificador :" + token.getId() + " Lexema: " + token.getCadena() + "  " + "Linea:" + token.getLinea() + "  " + "Columna:" + token.getColumna() + "\n";
                 //analisis += token;
             }
-<<<<<<< HEAD
             String errores = "";
             for (Token token : tokens) {
                 if(token.getId() == TokenId.ERROR_LEXICO){
@@ -376,12 +375,9 @@ public class FramePrincipal extends javax.swing.JFrame {
                 }
             }
             textArea2.setText(errores);
-           
-=======
             textArea2.setText(analisis);
             System.out.println("es comentario? " + expresion.validarComentario(texto));
             analizarS();
->>>>>>> develop
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
         }

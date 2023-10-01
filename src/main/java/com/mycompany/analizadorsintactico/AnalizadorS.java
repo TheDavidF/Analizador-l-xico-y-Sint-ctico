@@ -45,6 +45,27 @@ public class AnalizadorS {
                     if (tipoToken(TokenId.CONSTANTE, token)) {
                         castearToken();
                         esValida = true;
+                    } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("[")) {
+                        castearToken();
+                        esValida = true;
+                        if (tipoToken(TokenId.CONSTANTE, token)) {
+                            castearToken();
+                            esValida = true;
+                            while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")) {
+                                castearToken();
+                                if (tipoToken(TokenId.CONSTANTE, token)) {
+                                    castearToken();
+                                    esValida = true;
+
+                                } else {
+                                    esValida = false;
+                                    break;
+                                }
+                            }
+                        }
+                    } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("]")) {
+                        castearToken();
+                        esValida = true;
                     } else {
                         castearToken();
                         esValida = false;
@@ -69,17 +90,38 @@ public class AnalizadorS {
                             if (tipoToken(TokenId.CONSTANTE, token)) {
                                 castearToken();
                                 esValida = true;
-                                while(tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")){
+                                while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")) {
                                     castearToken();
                                     if (tipoToken(TokenId.CONSTANTE, token)) {
-                                    castearToken();
-                                    esValida = true;
-                                    
+                                        castearToken();
+                                        esValida = true;
+
                                     } else {
                                         esValida = false;
                                         break;
                                     }
                                 }
+                            } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("[")) {
+                                castearToken();
+                                esValida = true;
+                                if (tipoToken(TokenId.CONSTANTE, token)) {
+                                    castearToken();
+                                    esValida = true;
+                                    while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")) {
+                                        castearToken();
+                                        if (tipoToken(TokenId.CONSTANTE, token)) {
+                                            castearToken();
+                                            esValida = true;
+
+                                        } else {
+                                            esValida = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("]")) {
+                                castearToken();
+                                esValida = true;
                             } else {
                                 castearToken();
                                 esValida = false;
@@ -89,7 +131,7 @@ public class AnalizadorS {
                 } else if (tipoToken(TokenId.OPERADOR_ARITMETICO, token) && token.getCadena().equals("*")) {
                     castearToken();
                     if (tipoToken(TokenId.OPERADOR_ASIGNADOR, token)) {
-                        castearToken(); 
+                        castearToken();
                         if (tipoToken(TokenId.CONSTANTE, token)) {
                             castearToken();
                             esValida = true;
@@ -140,8 +182,8 @@ public class AnalizadorS {
         System.err.println("Error en la línea " + anterior().getLinea()
                 + ": " + mensaje);
     }
-    
-    private void castearToken(){
+
+    private void castearToken() {
         try {
             indexToken++;
             token = tokens.get(indexToken);
