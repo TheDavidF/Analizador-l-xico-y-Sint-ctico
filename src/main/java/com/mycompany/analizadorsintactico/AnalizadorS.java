@@ -18,6 +18,7 @@ public class AnalizadorS {
     private ArrayList<Token> tokens;
     private int indexToken;
     private Token token;
+    private boolean esValido = true;
 
     public AnalizadorS(ArrayList<Token> tokens) {
         this.tokens = tokens;
@@ -34,122 +35,152 @@ public class AnalizadorS {
         }
     }
 
+    private void automataDeclaracion() {
+        char estado = 'A';
+        for (Token token1 : tokens) {
+            if (tipoToken(TokenId.IDENTIFICADOR, token1)) {
+                estado = 'B';
+
+            } else {
+                estado = 'E';
+            }
+        }
+    }
+
     private void analizarDeclaracion() {
-        boolean esValida = false;
         token = tokens.get(indexToken);
         try {
-            if (tipoToken(TokenId.IDENTIFICADOR, token)) {
+            if (tipoToken(TokenId.IDENTIFICADOR, token) && token != null) {
                 castearToken();
-                if (tipoToken(TokenId.OPERADOR_ASIGNADOR, token)) {
+                if (tipoToken(TokenId.OPERADOR_ASIGNADOR, token) && token != null) {
                     castearToken();
-                    if (tipoToken(TokenId.CONSTANTE, token)) {
+                    if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
                         castearToken();
-                        esValida = true;
-                    } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("[")) {
+                        esValido = true;
+                    } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("[") && token != null) {
                         castearToken();
-                        esValida = true;
-                        if (tipoToken(TokenId.CONSTANTE, token)) {
-                            castearToken();
-                            esValida = true;
-                            while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")) {
-                                castearToken();
-                                if (tipoToken(TokenId.CONSTANTE, token)) {
-                                    castearToken();
-                                    esValida = true;
+                        esValido = true;
 
+                        if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("]") && token != null) {
+                            castearToken();
+                            esValido = true;
+                        } else if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
+                            castearToken();
+                            esValido = true;
+                            while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",") && token != null) {
+                                castearToken();
+                                if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
+                                    castearToken();
+                                    esValido = true;
                                 } else {
-                                    esValida = false;
+                                    esValido = false;
                                     break;
                                 }
                             }
+                        } else {
+                            dicAnidado();
+                            while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",") && token != null) {
+                                castearToken();
+                                dicAnidado();
+                            }
                         }
-                    } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("]")) {
-                        castearToken();
-                        esValida = true;
-                    } else {
-                        castearToken();
-                        esValida = false;
-                    }
-                    //evalua si vienen varias declaraciones
-                } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")) {
-                    while (token.getCadena().equals(",")) {
-                        castearToken();
-                        if (tipoToken(TokenId.IDENTIFICADOR, token)) {
+                        if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("]") && token != null) {
                             castearToken();
-                            esValida = true;
+                            esValido = true;
                         } else {
                             castearToken();
-                            esValida = false;
+                            esValido = false;
+                        }
+                    } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("{") && token != null) {
+                        dicAnidado();
+                        while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",") && token != null) {
+                            castearToken();
+                            dicAnidado();
+                        }
+                    } else {
+                        castearToken();
+                        esValido = false;
+                    }
+                    //evalua si vienen varias declaraciones
+                } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",") && token != null) {
+                    while (token.getCadena().equals(",") && token != null) {
+                        castearToken();
+                        if (tipoToken(TokenId.IDENTIFICADOR, token) && token != null) {
+                            castearToken();
+                            esValido = true;
+                        } else {
+                            castearToken();
+                            esValido = false;
                             break;
                         }
                     } //fin while
-
-                    if (esValida == true) {
-                        if (tipoToken(TokenId.OPERADOR_ASIGNADOR, token)) {
+                    if (esValido == true) {
+                        if (tipoToken(TokenId.OPERADOR_ASIGNADOR, token) && token != null) {
                             castearToken();
-                            if (tipoToken(TokenId.CONSTANTE, token)) {
+                            if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
                                 castearToken();
-                                esValida = true;
-                                while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")) {
+                                esValido = true;
+                                while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",") && token != null) {
                                     castearToken();
-                                    if (tipoToken(TokenId.CONSTANTE, token)) {
+                                    if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
                                         castearToken();
-                                        esValida = true;
-
+                                        esValido = true;
                                     } else {
-                                        esValida = false;
+                                        esValido = false;
                                         break;
                                     }
-                                }
-                            } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("[")) {
+                                }//fin while
+                                //para verificar arreglos    
+                            } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("[") && token != null) {
                                 castearToken();
-                                esValida = true;
-                                if (tipoToken(TokenId.CONSTANTE, token)) {
+                                esValido = true;
+                                if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
                                     castearToken();
-                                    esValida = true;
-                                    while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",")) {
+                                    esValido = true;
+                                    while (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",") && token != null) {
                                         castearToken();
-                                        if (tipoToken(TokenId.CONSTANTE, token)) {
+                                        if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
                                             castearToken();
-                                            esValida = true;
+                                            esValido = true;
 
                                         } else {
-                                            esValida = false;
+                                            esValido = false;
                                             break;
                                         }
-                                    }
+                                    }//fin while
                                 }
-                            } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("]")) {
+                            } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("]") && token != null) {
                                 castearToken();
-                                esValida = true;
+                                esValido = true;
                             } else {
                                 castearToken();
-                                esValida = false;
+                                esValido = false;
                             }
                         }
                     }
-                } else if (tipoToken(TokenId.OPERADOR_ARITMETICO, token) && token.getCadena().equals("*")) {
+                    //para verificar operaciones aritmeticas en declaraciones, pendiente a agregar todos los operadores    
+                } else if (tipoToken(TokenId.OPERADOR_ARITMETICO, token) && token.getCadena().equals("*") && token != null) {
                     castearToken();
-                    if (tipoToken(TokenId.OPERADOR_ASIGNADOR, token)) {
+                    if (tipoToken(TokenId.OPERADOR_ASIGNADOR, token) && token != null) {
                         castearToken();
-                        if (tipoToken(TokenId.CONSTANTE, token)) {
+                        if (tipoToken(TokenId.CONSTANTE, token) && token != null) {
                             castearToken();
-                            esValida = true;
+                            esValido = true;
                         } else {
                             castearToken();
-                            esValida = false;
+                            esValido = false;
                         }
                     } else {
-                        esValida = false;
+                        esValido = false;
                     }
                 } else {
-                    esValida = false;
+                    esValido = false;
                 }
 
             }
 
-            if (esValida == true) {
-                System.out.println("todo correcto en la ejecución");
+            if (esValido == true) {
+                System.out.println("todo correcto en la ejecución en linea:" + (token.getLinea() - 1));
             } else {
                 hayError("token no esperado");
             }
@@ -159,8 +190,62 @@ public class AnalizadorS {
 
     }
 
+    private void dicAnidado() {
+        try {
+            if (token != null) {
+                token = tokens.get(indexToken);
+            }
+
+            if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("{") && token != null) {
+                esValido = true;
+                castearToken();
+                if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("}") && token != null) {
+                    esValido = true;
+                    castearToken();
+                } else if (tipoToken(TokenId.IDENTIFICADOR, token) || tipoToken(TokenId.CONSTANTE, token) && token != null) {
+                    while (tipoToken(TokenId.IDENTIFICADOR, token) || tipoToken(TokenId.CONSTANTE, token) && token != null) {
+                        castearToken();
+                        if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(":") && token != null) {
+                            esValido = true;
+                            castearToken();
+                            if (tipoToken(TokenId.IDENTIFICADOR, token) || tipoToken(TokenId.CONSTANTE, token) && token != null) {
+                                castearToken();
+                                if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals(",") && (tipoToken(TokenId.IDENTIFICADOR, tokens.get(indexToken + 1))
+                                        || tipoToken(TokenId.CONSTANTE, tokens.get(indexToken + 1))) && token != null) {
+                                    esValido = true;
+                                    castearToken();
+                                } else if (tipoToken(TokenId.OTROS_OPERADORES, token) && token.getCadena().equals("}") && token != null) {
+                                    esValido = true;
+                                    castearToken();
+                                    break;
+                                } else {
+                                    esValido = false;
+                                    castearToken();
+                                    break;
+                                }
+                            } else {
+                                esValido = false;
+                                break;
+                            }
+                        } else {
+                            esValido = false;
+                            castearToken();
+                            break;
+                        }
+                    } //fin while
+                } else {
+                    esValido = false;
+                    castearToken();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("no hay diccionarios anidados");
+        }
+
+    }
+
     private boolean tipoToken(TokenId tokenEsperado, Token token) {
-        if (token.getId() == tokenEsperado) {
+        if (token != null && token.getId() == tokenEsperado) {
             return true;
         }
         return false;
@@ -185,10 +270,11 @@ public class AnalizadorS {
 
     private void castearToken() {
         try {
-            indexToken++;
-            token = tokens.get(indexToken);
+            this.indexToken++;
+            this.token = tokens.get(indexToken);
         } catch (Exception e) {
             System.out.println("no hay mas tokens");
+            token = null;
         }
     }
 }

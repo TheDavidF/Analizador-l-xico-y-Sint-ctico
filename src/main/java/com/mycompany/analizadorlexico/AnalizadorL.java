@@ -29,6 +29,7 @@ public class AnalizadorL {
     public ArrayList<Token> listarTokens() {
         lineaT = 0;
         columnaT = 0;
+        String cadenaa;
         int columnaActual = 0;
         while (columnaActual < cadena.length()) {
             char charActual = cadena.charAt(columnaActual);
@@ -143,7 +144,7 @@ public class AnalizadorL {
                 columnaActual++;
                 columnaT++;
             } else if (cadena.charAt(columnaActual) == '=') {
-                String identificador = "" + cadena.charAt(columnaT);
+                String identificador = "" + cadena.charAt(columnaActual);
                 columnaActual++;
                 columnaT++;
                 if (expresion.validarAsignacion(identificador)) {
