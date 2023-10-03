@@ -7,6 +7,7 @@ package com.mycompany.analizadorsintactico;
 import com.mycompany.analizadorlexico.Token;
 import com.mycompany.analizadorlexico.TokenId;
 import java.awt.List;
+import java.time.chrono.ThaiBuddhistEra;
 import java.util.ArrayList;
 
 /**
@@ -19,34 +20,230 @@ public class AnalizadorS {
     private int indexToken;
     private Token token;
     private boolean esValido = true;
+    private String estado;
+    private ArrayList<String> varDeclaradas;
 
     public AnalizadorS(ArrayList<Token> tokens) {
         this.tokens = tokens;
         this.indexToken = 0;
+        this.varDeclaradas = new ArrayList<>();
     }
 
     public void analizador() {
-        while (indexToken < tokens.size()) {
-            if (tipoToken(TokenId.IDENTIFICADOR, tokens.get(indexToken))) {
-                analizarDeclaracion();
-            } else {
-                indexToken++;
-            }
-        }
+        //while (indexToken < tokens.size()) {
+        //    if (tipoToken(TokenId.IDENTIFICADOR, tokens.get(indexToken))) {
+        //        analizarDeclaracion();
+        //    } else {
+        //        indexToken++;
+        //    }
+        //}
+        validarDeclaracionAsignacion();
     }
 
     private void automataDeclaracion() {
-        char estado = 'A';
+        char estado1 = 'A';
         for (Token token1 : tokens) {
             if (tipoToken(TokenId.IDENTIFICADOR, token1)) {
-                estado = 'B';
+                estado1 = 'B';
 
             } else {
-                estado = 'E';
+                estado1 = 'E';
             }
         }
     }
 
+    private void validarDeclaracionAsignacion() {
+        this.estado = "A";
+        String variable = null;
+        boolean salir = false;
+        for (Token token1 : tokens) {
+            switch (estado) {
+                case "A":
+                    if (token1.getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "B";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "B":
+                    if (token1.getId().equals(TokenId.OTROS_OPERADORES) && token1.getCadena().equals(",")) {
+                        estado = "C";
+                    } else if (token1.getId().equals(TokenId.OPERADOR_ARITMETICO)) {
+                        estado = "C";
+                    } else if (token1.getId().equals(TokenId.OPERADOR_ASIGNADOR)) {
+                        estado = "E";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "C":
+                    if (token1.getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "B";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "D":
+                    if (token1.getId().equals(TokenId.OPERADOR_ASIGNADOR)) {
+                        estado = "E";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "E":
+                    if (token1.getId().equals(TokenId.CONSTANTE)) {
+                        estado = "F";
+                    } else if (token1.getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(token1.getCadena())) {
+                        estado = "F";
+                    } else if (!estaDeclarada(token1.getCadena())) {
+                        System.out.println("la variable " + token1.getCadena() + " no está definida");
+                    } else if(token1.getId().equals(TokenId.OTROS_OPERADORES) && esApertura(token1.getCadena())){
+                        estado = "H";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "F":
+                    if(token1.getId().equals(TokenId.OPERADOR_ARITMETICO)){
+                        estado = "G";
+                    } else if(token1.getId().equals(TokenId.OTROS_OPERADORES) && esApertura(token1.getCadena())){
+                        estado = "H";
+                    } else {
+                        estado = "F";
+                        salir = true;
+                        break;
+                    }
+                    break;
+                case "G":
+                    if (token1.getId().equals(TokenId.CONSTANTE)) {
+                        estado = "F";
+                    } else if(token1.getId().equals(TokenId.OTROS_OPERADORES) && esApertura(token1.getCadena())){
+                        estado = "H";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "H":
+                    if (token1.getId().equals(TokenId.CONSTANTE)) {
+                        estado = "I";
+                    } else if (token1.getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(token1.getCadena())) {
+                        estado = "I";
+                    } else if(token1.getId().equals(TokenId.OTROS_OPERADORES) && esCierre(token1.getCadena())){
+                        estado = "F";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "I":
+                    if(token1.getId().equals(TokenId.OTROS_OPERADORES) && token1.getCadena().equals(":")){
+                        estado = "k";
+                    } else  if (token1.getId().equals(TokenId.OTROS_OPERADORES) && token1.getCadena().equals(",")) {
+                        estado = "J";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "J":
+                    if (token1.getId().equals(TokenId.CONSTANTE)) {
+                        estado = "I";
+                    } else if (token1.getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(token1.getCadena())) {
+                        estado = "I";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "K":
+                    if (token1.getId().equals(TokenId.CONSTANTE)) {
+                        estado = "L";
+                    } else if (token1.getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(token1.getCadena())) {
+                        estado = "L";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "L":
+                    if (token1.getId().equals(TokenId.OTROS_OPERADORES) && token1.getCadena().equals(",")) {
+                        estado = "M";
+                    } else if(token1.getId().equals(TokenId.OTROS_OPERADORES) && esCierre(token1.getCadena())){
+                        estado = "F";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "M":
+                    if (token1.getId().equals(TokenId.CONSTANTE)) {
+                        estado = "N";
+                    } else if (token1.getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(token1.getCadena())) {
+                        estado = "N";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                case "N":
+                    if(token1.getId().equals(TokenId.OTROS_OPERADORES) && token1.getCadena().equals(":")){
+                        estado = "k";
+                    } else {
+                        estado = "ERROR";
+                        hayError("");
+                    }
+                    break;
+                default:
+                    estado = "ERROR";
+                    throw new AssertionError();
+                
+                }
+            if(salir){
+                break;
+            }
+        }
+        if(estado == "F"){
+            System.out.println("no hay errores");
+        } else{
+            System.out.println("existieron errores sintacticos");
+        }
+
+    }
+
+    private boolean estaDeclarada(String var) {
+        for (String variable : varDeclaradas) {
+            if (variable.equals(var)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+        return false;
+    }
+
+    private boolean esApertura(String var){
+        if(var.equals("(") || var.equals("{") || var.equals("[")){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private boolean esCierre(String var){
+        if(var.equals(")") || var.equals("}") || var.equals("}")){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     private void analizarDeclaracion() {
         token = tokens.get(indexToken);
         try {
