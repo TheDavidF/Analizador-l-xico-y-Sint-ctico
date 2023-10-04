@@ -19,5 +19,6 @@ public enum TokenId {
     OTROS_OPERADORES,
     ERROR_LEXICO,
     CONSTANTE,
+    BOOLEANO,
 }
 

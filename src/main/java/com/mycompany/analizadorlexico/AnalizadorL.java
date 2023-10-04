@@ -59,10 +59,12 @@ public class AnalizadorL {
                     columnaActual++;
                     columnaT++;
                 }
-                if (expresion.validarKeywords(identificador)) {
-                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador, identificador));
+                if(expresion.validarBoleano(identificador)){
+                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.BOOLEANO, identificador, identificador));
                 } else if (expresion.validarLogico(identificador)) {
                     tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.OPERADOR_LOGICO, identificador, identificador));
+                } else if (expresion.validarKeywords(identificador)) {
+                    tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.PALABRA_RESERVADA, identificador, identificador));
                 } else if (expresion.validarIdentificador(identificador)) {
                     tokens.add(new Token((lineaT + 1), (columnaT), TokenId.IDENTIFICADOR, identificador, identificador));
                 } else {

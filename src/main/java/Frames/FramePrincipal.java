@@ -7,7 +7,6 @@ package Frames;
 import com.mycompany.analizadorlexico.AnalizadorL;
 import com.mycompany.analizadorlexico.Archivo;
 import com.mycompany.analizadorlexico.Expresion;
-import com.mycompany.analizadorlexico.Grafica;
 import com.mycompany.analizadorlexico.Token;
 import com.mycompany.analizadorlexico.TokenId;
 import static com.mycompany.analizadorlexico.TokenId.IDENTIFICADOR;
@@ -37,7 +36,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private Archivo file;
     private AnalizadorL lexico;
     private Expresion expresion;
-    //private Graficador graficador;
+    private AnalizadorS analizadorS;
 
     public FramePrincipal() {
         //graficador = new Graficador();
@@ -91,9 +90,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         textArea2 = new javax.swing.JTextPane();
-        analizarLabel = new javax.swing.JLabel();
+        lexicoLabel = new javax.swing.JLabel();
         limpiarJLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        analizarLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -149,21 +149,21 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 200));
 
-        analizarLabel.setBackground(new java.awt.Color(70, 130, 169));
-        analizarLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
-        analizarLabel.setForeground(new java.awt.Color(246, 244, 235));
-        analizarLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        analizarLabel.setText("Analizar");
-        analizarLabel.setOpaque(true);
-        analizarLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+        lexicoLabel.setBackground(new java.awt.Color(70, 130, 169));
+        lexicoLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        lexicoLabel.setForeground(new java.awt.Color(246, 244, 235));
+        lexicoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lexicoLabel.setText("Analisis Léxico");
+        lexicoLabel.setOpaque(true);
+        lexicoLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                analizarLabelMouseClicked(evt);
+                lexicoLabelMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                analizarLabelMouseEntered(evt);
+                lexicoLabelMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                analizarLabelMouseExited(evt);
+                lexicoLabelMouseExited(evt);
             }
         });
 
@@ -188,6 +188,24 @@ public class FramePrincipal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
         jLabel1.setText("Errores:");
 
+        analizarLabel1.setBackground(new java.awt.Color(70, 130, 169));
+        analizarLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
+        analizarLabel1.setForeground(new java.awt.Color(246, 244, 235));
+        analizarLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        analizarLabel1.setText("Analisis Sintáctico");
+        analizarLabel1.setOpaque(true);
+        analizarLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                analizarLabel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                analizarLabel1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                analizarLabel1MouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelPrincipalLayout = new javax.swing.GroupLayout(PanelPrincipal);
         PanelPrincipal.setLayout(PanelPrincipalLayout);
         PanelPrincipalLayout.setHorizontalGroup(
@@ -200,9 +218,10 @@ public class FramePrincipal extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(PanelPrincipalLayout.createSequentialGroup()
                             .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
-                            .addComponent(analizarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(10, 10, 10)))
+                            .addGap(36, 36, 36)
+                            .addComponent(lexicoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(30, 30, 30)
+                            .addComponent(analizarLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
@@ -212,7 +231,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(analizarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lexicoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(analizarLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -293,9 +313,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         reporte.setVisible(true);
     }//GEN-LAST:event_generarReporteActionPerformed
 
-    private void analizarLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabelMouseClicked
-        analizarTexto();
-    }//GEN-LAST:event_analizarLabelMouseClicked
+    private void lexicoLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lexicoLabelMouseClicked
+       analizarTexto();
+    }//GEN-LAST:event_lexicoLabelMouseClicked
 
     private void menuGenerarGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuGenerarGMouseClicked
         this.setVisible(false);
@@ -313,18 +333,18 @@ public class FramePrincipal extends javax.swing.JFrame {
         limpiarJLabel.setBackground(new Color(116, 155, 194));
     }//GEN-LAST:event_limpiarJLabelMouseEntered
 
-    private void analizarLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabelMouseEntered
-        analizarLabel.setBackground(new Color(116, 155, 194));
-    }//GEN-LAST:event_analizarLabelMouseEntered
+    private void lexicoLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lexicoLabelMouseEntered
+        lexicoLabel.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_lexicoLabelMouseEntered
 
     private void limpiarJLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_limpiarJLabelMouseExited
         limpiarJLabel.setBackground(new Color(70, 130, 169));
 
     }//GEN-LAST:event_limpiarJLabelMouseExited
 
-    private void analizarLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabelMouseExited
-        analizarLabel.setBackground(new Color(70, 130, 169));
-    }//GEN-LAST:event_analizarLabelMouseExited
+    private void lexicoLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lexicoLabelMouseExited
+        lexicoLabel.setBackground(new Color(70, 130, 169));
+    }//GEN-LAST:event_lexicoLabelMouseExited
 
     private void textArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textArea1KeyPressed
         //try {
@@ -335,6 +355,21 @@ public class FramePrincipal extends javax.swing.JFrame {
         //} 
     }//GEN-LAST:event_textArea1KeyPressed
 
+    private void analizarLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseClicked
+        if(this.analizadorS != null){
+            analizadorS.analizador();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error, Se requiere analisis léxico previo");
+        }
+    }//GEN-LAST:event_analizarLabel1MouseClicked
+
+    private void analizarLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseEntered
+        analizarLabel1.setBackground(new Color(116, 155, 194));
+    }//GEN-LAST:event_analizarLabel1MouseEntered
+
+    private void analizarLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseExited
+        analizarLabel1.setBackground(new Color(70, 130, 169));
+    }//GEN-LAST:event_analizarLabel1MouseExited
 
     public int getLinea() {
         return linea;
@@ -367,11 +402,11 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
             String errores = "";
             for (Token token : tokens) {
-                if(token.getId() == TokenId.ERROR_LEXICO){
+                if (token.getId() == TokenId.ERROR_LEXICO) {
                     errores = "------Analisis completo------\n";
-                    errores += "Error cadena no reconocida "+token.getCadena()  +" en la Linea: " + token.getLinea()+ "   Y Columna:" + token.getColumna() + "\n";   
+                    errores += "Error cadena no reconocida " + token.getCadena() + " en la Linea: " + token.getLinea() + "   Y Columna:" + token.getColumna() + "\n";
                 } else {
-                    errores ="------Analisis completo, no se encontraron errores------";
+                    errores = "------Analisis completo, no se encontraron errores------";
                 }
             }
             textArea2.setText(errores);
@@ -420,8 +455,11 @@ public class FramePrincipal extends javax.swing.JFrame {
                 case OTROS_OPERADORES:
                     atributo = colorVerde;
                     break;
+                case BOOLEANO:
+                    atributo = colorAnaranjado;
+                    break;
                 case ERROR_LEXICO:
-                    atributo = colorVerde;
+                    atributo = colorRojo;
                     break;
                 default:
                     //throw new AssertionError();
@@ -441,10 +479,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
 
     }
-    
-    private void analizarS(){
-        AnalizadorS analizadorS = new AnalizadorS(lexico.getTokens());
-        analizadorS.analizador();
+
+    private void analizarS() {
+        analizadorS = new AnalizadorS(lexico.getTokens());
+        
     }
 
     public AnalizadorL getLexico() {
@@ -471,7 +509,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane Jscroll1;
     private javax.swing.JPanel PanelPrincipal;
-    private javax.swing.JLabel analizarLabel;
+    private javax.swing.JLabel analizarLabel1;
     private javax.swing.JMenuItem generarReporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
@@ -483,6 +521,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelText1;
     private javax.swing.JLabel labelText2;
+    private javax.swing.JLabel lexicoLabel;
     private javax.swing.JLabel limpiarJLabel;
     private javax.swing.JMenu menuAcercade;
     private javax.swing.JMenu menuArchivo;
