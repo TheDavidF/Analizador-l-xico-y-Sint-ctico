@@ -264,8 +264,175 @@ public class AnalizadorS {
             }
             variables.clear();
             errores += "no hay errores en linea: " + (linea) + "\n";
+        } else {
+            variables.clear();
+            errores += hayError(estado) + "\n";
         }
+    }
 
+    private void validarExpresionesLogicas() {
+        estado = "A";
+        while (indexToken < tokens.size()) {
+            switch (estado) {
+                case "A":
+                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "B";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
+                        estado = "B";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
+                        estado = "C";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("len")) {
+                        estado = "K";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "B":
+                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_COMPARACION)) {
+                        estado = "D";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("in")) {
+                        estado = "I";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("is")) {
+                        estado = "J";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "C":
+                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "E";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
+                        estado = "E";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "D":
+                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "H";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
+                        estado = "H";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "E":
+                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_COMPARACION)) {
+                        estado = "F";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
+                        estado = "D";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "F":
+                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "G";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
+                        estado = "G";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "G":
+                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
+                        estado = "H";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "H":
+                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_LOGICO)) {
+                        estado = "A";
+                    } else {
+                        estado = "H";
+
+                    }
+                    break;
+                case "I":
+                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "H";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
+                        estado = "H";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "J":
+                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
+                        estado = "H";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
+                        estado = "H";
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("None")) {
+                        estado = "H";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "K":
+                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
+                        estado = "C";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "ERROR":
+                    
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }
+    }
+    
+    private void validarIf(){
+        estado = "A";
+        while (indexToken < tokens.size()) {
+            switch (estado) {
+                case "A":
+                    if(tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("if")){
+                        estado = "B";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "B":
+                    estado = "C";//necesito validar expresion y seguir con el flujo de ejecución
+                    
+                    break;
+                case "C":
+                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(":")) {
+                        estado = "D";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "D":
+                    estado = "E";//necesito validar boque de código 
+                    break;
+                case "E":
+                    if(tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("else") || tokens.get(indexToken).getCadena().equals("elif")){
+                        estado = "F";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "F":
+                    estado = "C";//necesito validar expresion y seguir con el flujo de ejecución
+                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(":")) {
+                        estado = "D";
+                    } else {
+                        estado = "ERROR";
+                    }
+
+                    break;
+                case "ERROR":
+                    
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }
     }
 
     private String estadoError(String estado) {
