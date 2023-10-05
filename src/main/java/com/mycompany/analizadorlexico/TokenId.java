@@ -20,5 +20,6 @@ public enum TokenId {
     ERROR_LEXICO,
     CONSTANTE,
     BOOLEANO,
+    INDENT,
 }
 

@@ -357,7 +357,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void analizarLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseClicked
         if(this.analizadorS != null){
-            analizadorS.analizador();
+            analizadorS.analizar();
         } else {
             JOptionPane.showMessageDialog(this, "Error, Se requiere analisis léxico previo");
         }
