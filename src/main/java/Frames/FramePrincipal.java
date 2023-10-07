@@ -11,9 +11,12 @@ import com.mycompany.analizadorlexico.Token;
 import com.mycompany.analizadorlexico.TokenId;
 import static com.mycompany.analizadorlexico.TokenId.IDENTIFICADOR;
 import com.mycompany.analizadorsintactico.AnalizadorS;
+import com.mycompany.analizadorsintactico.SyntaxError;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -357,7 +360,12 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void analizarLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseClicked
         if(this.analizadorS != null){
-            analizadorS.analizar();
+            
+            try {
+                analizadorS.analizar();
+            } catch (SyntaxError ex) {
+                Logger.getLogger(FramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Error, Se requiere analisis léxico previo");
         }

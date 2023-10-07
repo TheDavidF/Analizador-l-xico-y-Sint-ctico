@@ -26,6 +26,8 @@ public class AnalizadorS {
     private int linea;
     private String errores;
     private ArrayList<Token> sentencias;
+    private int cierrePen;
+    private boolean salir;
 
     public AnalizadorS(ArrayList<Token> tokens) {
         this.tokens = tokens;
@@ -34,94 +36,513 @@ public class AnalizadorS {
         this.linea = 1;
         this.errores = "";
         sentencias = new ArrayList<>();
+        this.cierrePen = 0;
+        this.salir = false;
 
     }
 
-    
-    public void analizar() {
-        programa();
+    public void analizar() throws SyntaxError {
+        while (indexToken < tokens.size()) {
+            if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
+                automataDec();
+            }
+            try {
+                linea = tokens.get(indexToken).getLinea();
+            } catch (Exception e) {
+            }
+        }
+        System.out.println("análisis sintáctico finalizado");
+        /* programa();
         if (indexToken < tokens.size()) {
             // Error: no se consumieron todos los tokens.
             System.out.println("Error de sintaxis en la posición " + indexToken);
         } else {
             System.out.println("Análisis sintáctico completado con éxito.");
+        }*/
+    }
+
+    private boolean automataDec() {
+        salir = false;
+        estado = "A";
+        while (indexToken < tokens.size()) {
+            if (saltoLinea()) {
+                if (estado.equals("E")) {
+                    salir = true;
+                    try {
+                        this.linea = tokens.get(indexToken).getLinea();
+                    } catch (Exception e) {
+                    }
+                    return true;
+                } else {
+                    salir = true;
+                    System.out.println("ERROR en linea :" + (linea) + ", declaración invalida");
+                    return false;
+                }
+            } else {
+                switch (estado) {
+                    case "A":
+                        if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
+                            estado = "B";
+                            castear();
+                        } else {
+                            estado = "ERROR";
+                            System.out.println("Error en linea:" + linea + " se esperaba un identificador");
+                            castear();
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            return false;
+                        }
+                        break;
+                    case "B":
+                        if (tokenEsperado(TokenId.OPERADOR_ASIGNADOR, indexToken)) {
+                            estado = "C";
+                            castear();
+                        } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
+                            estado = "A";
+                            castear();
+                        } else if (tokenEsperado(TokenId.OPERADOR_ARITMETICO, indexToken)) {
+                            estado = "D";
+                            castear();
+                        } else {
+                            estado = "ERROR";
+                            System.out.println("Error en linea:" + linea + " se esperaba un =");
+                            castear();
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            return false;
+                        }
+                        break;
+                    case "C":
+                        if (automataExpresion()) {
+                            estado = "E";
+                            salir = false;
+                        } else {
+                            estado = "ERROR";
+                            //System.out.println("Error en linea:" + linea + " se esperaba una expresión");
+                            castear();
+                            try {
+                                linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            return false;
+
+                        }
+                        break;
+                    case "D":
+                        if (tokenEsperado(TokenId.OPERADOR_ASIGNADOR, indexToken)) {
+                            estado = "C";
+                            castear();
+                        } else {
+                            estado = "ERROR";
+                            System.out.println("Error en linea:" + linea + " se esperaba un =");
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            return false;
+                        }
+                        break;
+                    case "E":
+                        if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
+                            estado = "C";
+                        } else {
+                            salir = true;
+                            castear();
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            return true;
+                        }
+                        break;
+                    case "ERROR":
+                        castear();
+                        try {
+                            this.linea = tokens.get(indexToken).getLinea();
+                        } catch (Exception e) {
+                        }
+                        return false;
+                    default:
+                        estado = "ERROR";
+                        return false;
+                }
+            }
+
+            if (salir) {
+            }
+
+        }
+        if (indexToken == tokens.size() && !estado.equals("E")) {
+            System.out.println("Error en linea: " + linea + " declaración invalida");
+        }
+        return false;
+    }
+
+    private boolean automataExpresion() {
+        salir = false;
+        estado = "A";
+        while (indexToken < tokens.size()) {
+            if (saltoLinea()) {
+                if (estado.equals("B")) {
+                    salir = true;
+                    return true;
+                } else {
+                    salir = true;
+                    System.out.println("ERROR en linea :" + (linea - 1) + ", expresión invalida");
+                }
+            } else {
+                switch (estado) {
+                    case "A":
+                        if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.BOOLEANO, indexToken)) {
+                            estado = "B";
+                            castear();
+                        } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).equals("(")) {
+                            estado = "D";
+                            castear();
+                        } else if (tokenEsperado(TokenId.OPERADOR_ARITMETICO, indexToken)) {
+                            estado = "C";
+                            castear();
+                        } else {
+                            estado = "ERROR";
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            System.out.println("Error en linea:" + linea + " expresión inválida");
+                        }
+                        break;
+                    case "B":
+                        if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).equals("(")) {
+                            estado = "D";
+                            castear();
+                        } else if (tokenEsperado(TokenId.OPERADOR_ARITMETICO, indexToken)) {
+                            estado = "C";
+                            castear();
+                        } else {
+                            salir = true;
+                            return true;
+                        }
+                        break;
+                    case "C":
+                        if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).equals("(")) {
+                            estado = "D";
+                            castear();
+                        } else if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.BOOLEANO, indexToken)) {
+                            estado = "B";
+                            castear();
+                        } else {
+                            estado = "ERROR";
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            System.out.println("Error en linea:" + linea + " falta expresión después del operador");
+                        }
+                        break;
+                    case "D":
+                        if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.BOOLEANO, indexToken)) {
+                            estado = "E";
+                            castear();
+                        } else {
+                            estado = "ERROR";
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            System.out.println("Error en linea:" + linea + " Se esperaba una expresión");
+                        }
+                        break;
+                    case "E":
+                        if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).equals(")")) {
+                            estado = "B";
+                        } else {
+                            estado = "ERROR";
+                            try {
+                                this.linea = tokens.get(indexToken).getLinea();
+                            } catch (Exception e) {
+                            }
+                            System.out.println("Error en linea:" + linea + " se esperaba un paréntesis de cierre");
+                        }
+                        break;
+                    case "ERROR":
+                        salir = true;
+                        return false;
+                    default:
+                        estado = "ERROR";
+                }
+            }
+            if (salir) {
+            }
+
+        }
+        return false;
+    }
+
+    private boolean salto(int index) {
+        try {
+            if (tokens.get(index).getLinea() != linea) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
         }
     }
-    
-    public void programa() {
+
+    public void programa() throws SyntaxError {
         while (indexToken < tokens.size()) {
             sentencia();
-            if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                validarDeclaracionAsignacion();
-            } else {
-                castear();
-            }
+
         }
-        System.out.println(errores);
+        //System.out.println(errores);
 
     }
-    
-    private void sentencia() {
-        if(tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && tokenEsperado(TokenId.OPERADOR_ASIGNADOR, (indexToken+1))){
+
+    private void sentencia() throws SyntaxError {
+        if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && tokenEsperado(TokenId.OPERADOR_ASIGNADOR, (indexToken + 1))) {
             sentencias.add(tokens.get(indexToken));
             castear();
-            if(tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken + 1) && tokens.get(indexToken).getCadena().equals("None")){
+            if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken + 1) && tokens.get(indexToken).getCadena().equals("None")) {
+                castear();
+                if (saltoLinea()) {
+                    throw new SyntaxError("Sentencia invalida, se esperaba una expresión");
+                }
                 validarDeclaracion();
             } else {
+                castear();
+                if (saltoLinea()) {
+                    throw new SyntaxError("Sentencia invalida, se esperaba una expresión");
+                }
                 validarAsignacion();
             }
-        } else if(tokenEsperado(TokenId.IDENTIFICADOR, indexToken) && tokenEsperado(TokenId.OPERADOR_ARITMETICO, (indexToken+1)) 
-                || tokenEsperado(TokenId.IDENTIFICADOR, indexToken) && tokenEsperado(TokenId.OTROS_OPERADORES, indexToken+1) 
-                && tokens.get(indexToken+1).getCadena().equals(",") ){
-                validarAsignacion();
-        } else if(tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) 
-                && esApertura(tokens.get(indexToken).getCadena())){
+        } else if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) && tokenEsperado(TokenId.OPERADOR_ARITMETICO, (indexToken + 1))) {
+            castear();
+            validarAsignacion();
+        } else if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.OTROS_OPERADORES, indexToken)
+                && esApertura(tokens.get(indexToken).getCadena())) {
             validarExpresion();
-        } else if(tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("if")){
+        } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("if")) {
             validarIf();
-        } else if(tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("while")){
+        } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("while")) {
             validarWhile();
-        } else if(tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("for")){
+        } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("for")) {
             validarFor();
         }
     }
-    
-    private void validarDeclaracion(){
-    
-    }
-    
-    private void validarAsignacion(){
-    
-    }
-    
-    //expresion    -> identificador | constante | "(" expresion ")" | operador expresion
-    private void validarExpresion(){
-    
-    }
-    
-    private void validarIf(){
-    
-    }
-    
-    private void validarWhile(){
-    
-    }
-    
-    private void validarFor(){
-    
-    }
-    
-    private boolean tokenEsperado(TokenId id, int index){
-        try {
-            if(tokens.get(index).getId().equals(id)){
-            return true;
+
+    private void validarDeclaracion() throws SyntaxError {
+        if (tokenEsperado(TokenId.OPERADOR_ASIGNADOR, (indexToken))) {
+            castear();
+            validarExpresion();
         } else {
-            return false;
+            throw new SyntaxError("Asingación invalida");
         }
+
+    }
+
+    private void validarAsignacion() throws SyntaxError {
+        if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
+            castear();
+            validarAsignacion();
+        } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
+            castear();
+            validarAsignacion();
+        } else if (tokenEsperado(TokenId.OPERADOR_ASIGNADOR, indexToken)) {
+            castear();
+            validarExpresion();
+        } else {
+            validarExpresion();
+        }
+    }
+
+    //expresion    -> identificador | constante | "(" expresion ")" | operador expresion
+    private void validarExpresion() throws SyntaxError {
+        while (indexToken < tokens.size()) {
+            if (saltoLinea()) {
+
+            }
+            if (tokens.isEmpty()) {
+                throw new SyntaxError("Expresión vacía.");
+            }
+            if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
+                castear();
+                if (saltoLinea()) {
+                    break;
+                }
+                if (tokens.size() == 1) {
+                    // Expresión simple de un solo token (identificador o constante)
+                    break;
+                } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
+                    castear();
+                    if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
+                        validarExpresion();
+                    } else {
+                        throw new SyntaxError("Expresión invalida");
+                    }
+                } else {
+                    validarExpresion();
+                }
+
+            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && esApertura(tokens.get(indexToken).getCadena())) {
+                if (tokens.get(indexToken).getCadena().equals("(")) {
+                    if (encontrarParentesisDerecho("(", ")").equals("parentesis encontrado")) {
+                        castear();
+                        cierrePen++;
+                        validarExpresion();
+                    }
+                } else if (tokens.get(indexToken).getCadena().equals("[")) {
+                    if (encontrarParentesisDerecho("[", "]").equals("parentesis encontrado")) {
+                        castear();
+                        cierrePen = cierrePen + 1;
+                        int lineaa = linea;
+                        validarExpresion();
+                        castear();
+                        if (saltoLinea()) {
+                            break;
+                        }
+                    }
+                } else if (tokens.get(indexToken).getCadena().equals("{")) {
+                    if (encontrarParentesisDerecho("{", "}").equals("parentesis encontrado")) {
+                        castear();
+                        cierrePen++;
+                        validarDiccionario();
+                        castear();
+                        if (saltoLinea()) {
+                            break;
+                        }
+                    }
+                }
+
+            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && esCierre(tokens.get(indexToken).getCadena())) {
+                if (cierrePen > 0) {
+                    cierrePen--;
+                    castear();
+                    try {
+                        if (linea != tokens.get(indexToken + 1).getLinea()) {
+                            break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("no hay mas tokens");
+                    }
+                    validarExpresion();
+                } else {
+                    throw new SyntaxError("No se esperaba un paréntesis de cierre");
+                }
+            } else if (tokenEsperado(TokenId.OPERADOR_ARITMETICO, indexToken)) {
+                castear();
+                validarExpresion();
+            } else if (tokenEsperado(TokenId.BOOLEANO, indexToken)) {
+                castear();
+                if (saltoLinea()) {
+                    break;
+                }
+                validarExpresion();
+            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
+                castear();
+                if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
+                    validarExpresion();
+                } else {
+                    throw new SyntaxError("Expresión invalida");
+                }
+
+            } else {
+                throw new SyntaxError("Expresión invalida");
+            }
+        }
+
+    }
+
+    private boolean saltoLinea() {
+        try {
+            if (linea != tokens.get(indexToken).getLinea()) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("no hay mas tokens");
+        }
+
+        return false;
+    }
+
+    private String encontrarParentesisDerecho(String apertura, String cierre) throws SyntaxError {
+        int contadorParentesis = 0;
+        String resultado;
+        int i = indexToken;
+        while (i < tokens.size()) {
+            if (esApertura(tokens.get(i).getCadena()) && tokens.get(indexToken).getCadena().equals(apertura)) {
+                contadorParentesis++;
+            } else if (esCierre(tokens.get(i).getCadena()) && tokens.get(indexToken).getCadena().equals(apertura)) {
+                contadorParentesis--;
+                if (contadorParentesis == 0) {
+                    return "parentesis encontrado";
+                }
+            }
+            i++;
+        }
+        if (apertura.equals("(")) {
+            throw new SyntaxError("parentesis de cierre no encontrado");
+        } else if (apertura.equals("[")) {
+            throw new SyntaxError("corchete de cierre no encontrado");
+        } else {
+            throw new SyntaxError("llave de cierre no encontrada");
+        }
+
+    }
+
+    private void validarIf() {
+
+    }
+
+    private void validarWhile() {
+
+    }
+
+    private void validarFor() {
+
+    }
+
+    private void validarDiccionario() throws SyntaxError {
+        if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
+            castear();
+            validarDiccionario();
+        }
+        if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(":")) {
+            castear();
+            validarDiccionario();
+            if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {//falta si esta definida
+                castear();
+                if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
+                    castear();
+                    validarDiccionario();
+                }
+            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals("}")) {
+
+            } else {
+                validarExpresion();
+            }
+        } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals("}")) {
+
+        } else {
+            throw new SyntaxError("declaracion de diccionario invalido");
+        }
+    }
+
+    private boolean tokenEsperado(TokenId id, int index) {
+        try {
+            if (tokens.get(index).getId().equals(id)) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("no hay mas tokens");
             return false;
-                    
+
         }
     }
 
@@ -361,9 +782,9 @@ public class AnalizadorS {
                         estado = "C";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("len")) {
                         estado = "K";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "A";
-                    } else{
+                    } else {
                         estado = "ERROR";
                     }
                     break;
@@ -374,7 +795,7 @@ public class AnalizadorS {
                         estado = "I";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("is")) {
                         estado = "J";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "B";
                     } else {
                         estado = "ERROR";
@@ -385,9 +806,9 @@ public class AnalizadorS {
                         estado = "E";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
                         estado = "E";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "C";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
@@ -396,9 +817,9 @@ public class AnalizadorS {
                         estado = "H";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
                         estado = "H";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "D";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
@@ -407,9 +828,9 @@ public class AnalizadorS {
                         estado = "F";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
                         estado = "D";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "E";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
@@ -418,27 +839,27 @@ public class AnalizadorS {
                         estado = "G";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
                         estado = "G";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "F";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
                 case "G":
                     if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
                         estado = "H";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "G";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
                 case "H":
                     if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_LOGICO)) {
                         estado = "A";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "H";
-                    }  else {
+                    } else {
                         estado = "H";
 
                     }
@@ -448,9 +869,9 @@ public class AnalizadorS {
                         estado = "H";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
                         estado = "H";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "I";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
@@ -461,36 +882,36 @@ public class AnalizadorS {
                         estado = "H";
                     } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("None")) {
                         estado = "H";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "J";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
                 case "K":
                     if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
                         estado = "C";
-                    } else if(tokens.get(indexToken).getId().equals(TokenId.INDENT)){
+                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
                         estado = "K";
-                    }  else {
+                    } else {
                         estado = "ERROR";
                     }
                     break;
                 case "ERROR":
-                    
+
                     break;
                 default:
                     throw new AssertionError();
             }
         }
     }
-    
-    private void validarIff(){
+
+    private void validarIff() {
         estado = "A";
         while (indexToken < tokens.size()) {
             switch (estado) {
                 case "A":
-                    if(tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("if")){
+                    if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("if")) {
                         estado = "B";
                     } else {
                         estado = "ERROR";
@@ -498,7 +919,7 @@ public class AnalizadorS {
                     break;
                 case "B":
                     estado = "C";//necesito validar expresion y seguir con el flujo de ejecución
-                    
+
                     break;
                 case "C":
                     if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(":")) {
@@ -511,7 +932,7 @@ public class AnalizadorS {
                     estado = "E";//necesito validar boque de código 
                     break;
                 case "E":
-                    if(tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("else") || tokens.get(indexToken).getCadena().equals("elif")){
+                    if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("else") || tokens.get(indexToken).getCadena().equals("elif")) {
                         estado = "F";
                     } else {
                         estado = "ERROR";
@@ -527,7 +948,7 @@ public class AnalizadorS {
 
                     break;
                 case "ERROR":
-                    
+
                     break;
                 default:
                     throw new AssertionError();
@@ -558,15 +979,15 @@ public class AnalizadorS {
         }
 
     }
-    
-    private void siguiente(String validacion){
+
+    private void siguiente(String validacion) {
         try {
-            if(tokens.get(indexToken + 1).getId().equals(this)){
-            
+            if (tokens.get(indexToken + 1).getId().equals(this)) {
+
             }
         } catch (Exception e) {
         }
-        
+
     }
 
     private boolean estaDeclarada(String var) {
@@ -621,5 +1042,4 @@ public class AnalizadorS {
         }
     }
 
-    
 }

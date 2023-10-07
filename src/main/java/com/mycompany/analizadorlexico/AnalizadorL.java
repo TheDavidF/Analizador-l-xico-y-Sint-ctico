@@ -39,8 +39,9 @@ public class AnalizadorL {
                 String saltoLinea = "";
                 if (cadena.charAt(columnaActual) == '\n' || cadena.charAt(columnaActual) == '\r') {
                     columnaT = 0;
+                    int columna = columnaActual;
                     columnaActual++;
-                    if (cadena.charAt(columnaActual) == '\n') {
+                    if (cadena.charAt(columna) == '\n') {
                         lineaT++;
                     }
                 } else if (Character.isWhitespace(charActual)) {
