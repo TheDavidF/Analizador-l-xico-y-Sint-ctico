@@ -363,8 +363,8 @@ public class FramePrincipal extends javax.swing.JFrame {
             
             try {
                 analizadorS.analizar();
-            } catch (SyntaxError ex) {
-                Logger.getLogger(FramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception e) {
+                System.out.println("error en frame principal");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Error, Se requiere analisis léxico previo");
