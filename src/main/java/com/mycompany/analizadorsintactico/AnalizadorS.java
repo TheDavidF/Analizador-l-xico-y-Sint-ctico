@@ -88,6 +88,11 @@ public class AnalizadorS {
                             System.out.println("Error en linea:" + linea + " se esperaba un identificador");
                             castear();
                             actualizarLinea();
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
                         }
                         break;
@@ -106,6 +111,11 @@ public class AnalizadorS {
                             System.out.println("Error en linea:" + linea + " se esperaba un =");
                             castear();
                             actualizarLinea();
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
                         }
                         break;
@@ -115,6 +125,11 @@ public class AnalizadorS {
                         } else {
                             estado = "ERROR";
                             actualizarLinea();
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
 
                         }
@@ -127,6 +142,11 @@ public class AnalizadorS {
                             estado = "ERROR";
                             System.out.println("Error en linea:" + linea + " se esperaba un =");
                             actualizarLinea();
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
                         }
                         break;
@@ -136,6 +156,11 @@ public class AnalizadorS {
                         } else {
                             castear();
                             actualizarLinea();
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return true;
                         }
                         break;
@@ -145,6 +170,11 @@ public class AnalizadorS {
                         return false;
                     default:
                         estado = "ERROR";
+                        if (!saltoLinea()) {
+                            linea++;
+                        } else {
+                            actualizarLinea();
+                        }
                         return false;
                 }
             }
@@ -169,7 +199,6 @@ public class AnalizadorS {
                     actualizarLinea();
                     System.out.println("ERROR en linea :" + (linea - 1) + ", expresión invalida");
                     salir = false;
-
                 }
             } else {
                 switch (estado) {
@@ -179,12 +208,22 @@ public class AnalizadorS {
                                 estado = "B";
                             } else {
                                 estado = "ERROR";
+                                if (!saltoLinea()) {
+                                    linea++;
+                                } else {
+                                    actualizarLinea();
+                                }
                                 return false;
                             }
                         } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals("{")) {
                             if (automataDiccionario()) {
                                 estado = "B";
                             } else {
+                                if (!saltoLinea()) {
+                                    linea++;
+                                } else {
+                                    actualizarLinea();
+                                }
                                 return false;
                             }
 
@@ -252,6 +291,11 @@ public class AnalizadorS {
                         break;
                     case "ERROR":
                         castear();
+                        if (!saltoLinea()) {
+                            linea++;
+                        } else {
+                            actualizarLinea();
+                        }
                         return false;
                     default:
                         estado = "ERROR";
@@ -279,6 +323,11 @@ public class AnalizadorS {
                     if (estado.equals("C")) {
                         System.out.println("ERROR en linea :" + (linea - 1) + ", falta corchete de cierre");
                     }
+                    if (!saltoLinea()) {
+                        linea++;
+                    } else {
+                        actualizarLinea();
+                    }
                     return false;
                 }
             } else {
@@ -289,6 +338,11 @@ public class AnalizadorS {
                             castear();
                         } else {
                             estado = "ERROR";
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
                         }
                         break;
@@ -301,6 +355,11 @@ public class AnalizadorS {
                             estado = "C";
                         } else {
                             estado = "ERROR";
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
                         }
                         break;
@@ -316,6 +375,11 @@ public class AnalizadorS {
                             actualizarLinea();
                             System.out.println("ERROR en linea :" + (linea) + ", falta corchete de cierre");
                             castear();
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
                         }
                         break;
@@ -326,11 +390,21 @@ public class AnalizadorS {
                             estado = "C";
                         } else {
                             estado = "ERROR";
+                            if (!saltoLinea()) {
+                                linea++;
+                            } else {
+                                actualizarLinea();
+                            }
                             return false;
                         }
                         break;
                     case "ERROR":
                         System.out.println("Array invalido");
+                        if (!saltoLinea()) {
+                            linea++;
+                        } else {
+                            actualizarLinea();
+                        }
                         return false;
                     default:
                         estado = "ERROR";
@@ -461,44 +535,39 @@ public class AnalizadorS {
         }
     }
 
-    private void sentencia() throws SyntaxError {
+    private void sentencia() {
         if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && tokenEsperado(TokenId.OPERADOR_ASIGNADOR, (indexToken + 1))) {
             sentencias.add(tokens.get(indexToken));
             castear();
             if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken + 1) && tokens.get(indexToken).getCadena().equals("None")) {
                 castear();
                 if (saltoLinea()) {
-                    throw new SyntaxError("Sentencia invalida, se esperaba una expresión");
                 }
                 validarDeclaracion();
             } else {
                 castear();
                 if (saltoLinea()) {
-                    throw new SyntaxError("Sentencia invalida, se esperaba una expresión");
                 }
-                validarAsignacion();
+                //validarAsignacion();
             }
         } else if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) && tokenEsperado(TokenId.OPERADOR_ARITMETICO, (indexToken + 1))) {
             castear();
-            validarAsignacion();
+            //validarAsignacion();
         } else if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.OTROS_OPERADORES, indexToken)
                 && esApertura(tokens.get(indexToken).getCadena())) {
-            validarExpresion();
+            //validarExpresion();
         } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("if")) {
-            validarIf();
+            //validarIf();
         } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("while")) {
-            validarWhile();
+            //validarWhile();
         } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("for")) {
-            validarFor();
+            //alidarFor();
         }
     }
 
-    private void validarDeclaracion() throws SyntaxError {
+    private void validarDeclaracion() {
         if (tokenEsperado(TokenId.OPERADOR_ASIGNADOR, (indexToken))) {
             castear();
-            validarExpresion();
-        } else {
-            throw new SyntaxError("Asingación invalida");
         }
 
     }
@@ -512,107 +581,8 @@ public class AnalizadorS {
             validarAsignacion();
         } else if (tokenEsperado(TokenId.OPERADOR_ASIGNADOR, indexToken)) {
             castear();
-            validarExpresion();
         } else {
-            validarExpresion();
         }
-    }
-
-    //expresion    -> identificador | constante | "(" expresion ")" | operador expresion
-    private void validarExpresion() throws SyntaxError {
-        while (indexToken < tokens.size()) {
-            if (saltoLinea()) {
-
-            }
-            if (tokens.isEmpty()) {
-                throw new SyntaxError("Expresión vacía.");
-            }
-            if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
-                castear();
-                if (saltoLinea()) {
-                    break;
-                }
-                if (tokens.size() == 1) {
-                    // Expresión simple de un solo token (identificador o constante)
-                    break;
-                } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
-                    castear();
-                    if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
-                        validarExpresion();
-                    } else {
-                        throw new SyntaxError("Expresión invalida");
-                    }
-                } else {
-                    validarExpresion();
-                }
-
-            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && esApertura(tokens.get(indexToken).getCadena())) {
-                if (tokens.get(indexToken).getCadena().equals("(")) {
-                    if (encontrarParentesisDerecho("(", ")").equals("parentesis encontrado")) {
-                        castear();
-                        cierrePen++;
-                        validarExpresion();
-                    }
-                } else if (tokens.get(indexToken).getCadena().equals("[")) {
-                    if (encontrarParentesisDerecho("[", "]").equals("parentesis encontrado")) {
-                        castear();
-                        cierrePen = cierrePen + 1;
-                        int lineaa = linea;
-                        validarExpresion();
-                        castear();
-                        if (saltoLinea()) {
-                            break;
-                        }
-                    }
-                } else if (tokens.get(indexToken).getCadena().equals("{")) {
-                    if (encontrarParentesisDerecho("{", "}").equals("parentesis encontrado")) {
-                        castear();
-                        cierrePen++;
-                        validarDiccionario();
-                        castear();
-                        if (saltoLinea()) {
-                            break;
-                        }
-                    }
-                }
-
-            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && esCierre(tokens.get(indexToken).getCadena())) {
-                if (cierrePen > 0) {
-                    cierrePen--;
-                    castear();
-                    try {
-                        if (linea != tokens.get(indexToken + 1).getLinea()) {
-                            break;
-                        }
-                    } catch (Exception e) {
-                        System.out.println("no hay mas tokens");
-                    }
-                    validarExpresion();
-                } else {
-                    throw new SyntaxError("No se esperaba un paréntesis de cierre");
-                }
-            } else if (tokenEsperado(TokenId.OPERADOR_ARITMETICO, indexToken)) {
-                castear();
-                validarExpresion();
-            } else if (tokenEsperado(TokenId.BOOLEANO, indexToken)) {
-                castear();
-                if (saltoLinea()) {
-                    break;
-                }
-                validarExpresion();
-            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
-                castear();
-                if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
-                    validarExpresion();
-                } else {
-                    throw new SyntaxError("Expresión invalida");
-                }
-
-            } else {
-                throw new SyntaxError("Expresión invalida");
-            }
-        }
-
     }
 
     private boolean saltoLinea() {
@@ -652,44 +622,6 @@ public class AnalizadorS {
 
     }
 
-    private void validarIf() {
-
-    }
-
-    private void validarWhile() {
-
-    }
-
-    private void validarFor() {
-
-    }
-
-    private void validarDiccionario() throws SyntaxError {
-        if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) || tokenEsperado(TokenId.CONSTANTE, indexToken)) {
-            castear();
-            validarDiccionario();
-        }
-        if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(":")) {
-            castear();
-            validarDiccionario();
-            if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {//falta si esta definida
-                castear();
-                if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(",")) {
-                    castear();
-                    validarDiccionario();
-                }
-            } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals("}")) {
-
-            } else {
-                validarExpresion();
-            }
-        } else if (tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals("}")) {
-
-        } else {
-            throw new SyntaxError("declaracion de diccionario invalido");
-        }
-    }
-
     private boolean tokenEsperado(TokenId id, int index) {
         try {
             if (tokens.get(index).getId().equals(id)) {
@@ -701,416 +633,6 @@ public class AnalizadorS {
             System.out.println("no hay mas tokens");
             return false;
 
-        }
-    }
-
-    private void validarDeclaracionAsignacion() {
-        this.estado = "A";
-        ArrayList<String> variables = new ArrayList<>();
-        boolean salir = false;
-        while (indexToken < tokens.size()) {
-            if (linea != tokens.get(indexToken).getLinea()) {
-                if (estado != "F") {
-                    errores += hayError(estadoError(estado)) + "\n";
-                    estado = "ERROR";
-                }
-                linea = tokens.get(indexToken).getLinea();
-            }
-            switch (estado) {
-                case "A":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "B";
-                        variables.add(tokens.get(indexToken).getCadena());
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError(estado)) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "B":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(",")) {
-                        estado = "C";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_ARITMETICO)) {
-                        estado = "C";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_ASIGNADOR)) {
-                        estado = "E";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError(estado)) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "C":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "B";
-                        variables.add(tokens.get(indexToken).getCadena());
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError(estado)) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "D":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_ASIGNADOR)) {
-                        estado = "E";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError(estado)) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "E":
-                    if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "F";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        agregarLlamada(tokens.get(indexToken).getCadena());
-                        estado = "F";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && !estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "ERROR";
-                        salir = true;
-                        System.out.println("la variable " + tokens.get(indexToken).getCadena() + " no está definida");
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.BOOLEANO)) {
-                        estado = "F";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
-                        estado = "H";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError(estado)) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "F":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_ARITMETICO)) {
-                        estado = "G";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
-                        estado = "H";
-                    } else {
-                        estado = "F";
-                        if (estado == "F") {
-                            for (String variable : variables) {
-                                varDeclaradas.add(new Variable(variable, (linea - 1)));
-                            }
-                            variables.clear();
-                            errores += "no hay errores en linea: " + (linea - 1) + "\n";
-                        }
-                        salir = true;
-                        break;
-                    }
-                    break;
-                case "G":
-                    if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "F";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
-                        estado = "H";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "H":
-                    if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "I";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "I";
-                        agregarLlamada(tokens.get(indexToken).getCadena());
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && !estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "ERROR";
-                        System.out.println("la variable " + tokens.get(indexToken).getCadena() + " no está definida");
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
-                        estado = "F";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "I":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(":")) {
-                        estado = "K";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(",")) {
-                        estado = "J";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "J":
-                    if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "I";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "I";
-                        agregarLlamada(tokens.get(indexToken).getCadena());
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && !estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "ERROR";
-                        System.out.println("la variable " + tokens.get(indexToken).getCadena() + " no está definida");
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "K":
-                    if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "L";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "L";
-                        agregarLlamada(tokens.get(indexToken).getCadena());
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && !estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "ERROR";
-                        System.out.println("la variable " + tokens.get(indexToken).getCadena() + " no está definida");
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "L":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(",")) {
-                        estado = "M";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
-                        estado = "F";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "M":
-                    if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "N";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "N";
-                        agregarLlamada(tokens.get(indexToken).getCadena());
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && !estaDeclarada(tokens.get(indexToken).getCadena())) {
-                        estado = "ERROR";
-                        System.out.println("la variable " + tokens.get(indexToken).getCadena() + " no está definida");
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "N":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(":")) {
-                        estado = "K";
-                    } else {
-                        estado = "ERROR";
-                        errores += hayError(estadoError("token no esperado")) + "\n";
-                        salir = true;
-                    }
-                    break;
-                case "ERROR":
-                    salir = true;
-                    break;
-                default:
-                    estado = "ERROR";
-                    throw new AssertionError();
-
-            }
-            if (salir) {
-                salir = false;
-                break;
-            }
-            castear();
-        }
-        if (estado == "F" && indexToken == tokens.size()) {
-            for (String variable : variables) {
-                varDeclaradas.add(new Variable(variable, (linea)));
-            }
-            variables.clear();
-            errores += "no hay errores en linea: " + (linea) + "\n";
-        } else {
-            variables.clear();
-            errores += hayError(estado) + "\n";
-        }
-    }
-
-    private void validarExpresionesLogicas() {
-        estado = "A";
-        while (indexToken < tokens.size()) {
-            switch (estado) {
-                case "A":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "B";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "B";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
-                        estado = "C";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("len")) {
-                        estado = "K";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "A";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "B":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_COMPARACION)) {
-                        estado = "D";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("in")) {
-                        estado = "I";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("is")) {
-                        estado = "J";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "B";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "C":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "E";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "E";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "C";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "D":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "D";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "E":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_COMPARACION)) {
-                        estado = "F";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
-                        estado = "D";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "E";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "F":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "G";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "G";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "F";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "G":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esCierre(tokens.get(indexToken).getCadena())) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "G";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "H":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OPERADOR_LOGICO)) {
-                        estado = "A";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "H";
-                    } else {
-                        estado = "H";
-
-                    }
-                    break;
-                case "I":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "I";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "J":
-                    if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR)) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.CONSTANTE)) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("None")) {
-                        estado = "H";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "J";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "K":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && esApertura(tokens.get(indexToken).getCadena())) {
-                        estado = "C";
-                    } else if (tokens.get(indexToken).getId().equals(TokenId.INDENT)) {
-                        estado = "K";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "ERROR":
-
-                    break;
-                default:
-                    throw new AssertionError();
-            }
-        }
-    }
-
-    private void validarIff() {
-        estado = "A";
-        while (indexToken < tokens.size()) {
-            switch (estado) {
-                case "A":
-                    if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("if")) {
-                        estado = "B";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "B":
-                    estado = "C";//necesito validar expresion y seguir con el flujo de ejecución
-
-                    break;
-                case "C":
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(":")) {
-                        estado = "D";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "D":
-                    estado = "E";//necesito validar boque de código 
-                    break;
-                case "E":
-                    if (tokens.get(indexToken).getId().equals(TokenId.PALABRA_RESERVADA) && tokens.get(indexToken).getCadena().equals("else") || tokens.get(indexToken).getCadena().equals("elif")) {
-                        estado = "F";
-                    } else {
-                        estado = "ERROR";
-                    }
-                    break;
-                case "F":
-                    estado = "C";//necesito validar expresion y seguir con el flujo de ejecución
-                    if (tokens.get(indexToken).getId().equals(TokenId.OTROS_OPERADORES) && tokens.get(indexToken).getCadena().equals(":")) {
-                        estado = "D";
-                    } else {
-                        estado = "ERROR";
-                    }
-
-                    break;
-                case "ERROR":
-
-                    break;
-                default:
-                    throw new AssertionError();
-            }
         }
     }
 
