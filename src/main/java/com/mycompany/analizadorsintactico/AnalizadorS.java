@@ -519,6 +519,168 @@ public class AnalizadorS {
         }
     }
 
+    private boolean automataIf(){
+        estado = "A";
+        while (indexToken < tokens.size()) {
+            switch (estado) {
+                case "A":
+                    if(tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("if")){
+                        castear();
+                        estado = "B";
+                    } else {
+                        estado = "ERROR";
+                    }
+                    break;
+                case "B":
+                    if(automataCond()){
+                        estado = "C";
+                    } else {
+                        actualizarLinea();
+                        errores += "ERROR en linea :" + (linea) + ", condicion invalida";
+                        System.out.println("ERROR en linea :" + (linea) + ", condicion invalida");
+                        estado = "C";
+                    }
+                    break;
+                case "C":
+                    if(tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(":")){
+                        castear();
+                        estado = "D";
+                    } else {
+                        actualizarLinea();
+                        castear();
+                        estado = "D";
+                        actualizarLinea();
+                        errores += "ERROR en linea :" + (linea) + ", falta :";
+                        System.out.println("ERROR en linea :" + (linea) + ", falta :");
+                    }
+                    break;
+                case "D":
+                    if(automataBloque()){
+                        estado = "E";
+                    } else {
+                        estado = "E";
+                    }
+                    break;
+                case "E":
+                    if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("else")) {
+                        castear();
+                        estado = "F";
+                    } else if(tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("elif")){
+                        castear();
+                        estado = "H";
+                    } else {
+                        return true;
+                    }
+                    break;
+                case "F":
+                    if(tokenEsperado(TokenId.OTROS_OPERADORES, indexToken) && tokens.get(indexToken).getCadena().equals(":")){
+                        castear();
+                        estado = "G";
+                    } else {
+                        actualizarLinea();
+                        errores += "ERROR en linea :" + (linea) + ", falta :";
+                        System.out.println("ERROR en linea :" + (linea) + ", falta :");
+                        estado = "G";
+                    }
+                    break;
+                case "G":
+                    if(automataBloque()){
+                        estado = "G";
+                    } else {
+                        estado = "G";
+                    }
+                    break;
+                case "H":
+                    if(automataCond()){
+                        estado = "C";
+                    } else {
+                        estado = "C";
+                    }
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }
+        if(estado.equals("G") || estado.equals("E")){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private boolean automataBloque(){
+        return true;
+    }
+    
+    private boolean automataCond(){
+        estado = "A";
+        while (indexToken < tokens.size()) {
+            switch (estado) {
+                case "A":
+                    if(tokenEsperado(TokenId.OPERADOR_LOGICO, indexToken) && tokens.get(indexToken).getCadena().equals("not")){
+                        castear();
+                        estado = "E";
+                    } else if(automataExpresion()){
+                        estado = "B";
+                    } else {
+                        estado = "B";
+                    }
+                    break;
+                case "B":
+                    if(tokenEsperado(TokenId.OPERADOR_COMPARACION, indexToken)){
+                        castear();
+                        estado = "C";
+                    } else {
+                        actualizarLinea();
+                        castear();
+                        errores += "ERROR en linea :" + (linea) + ", falta operador lógico";
+                        System.out.println("ERROR en linea :" + (linea) + ", falta operador lógico");
+                        estado = "C";
+                    }
+                    break;
+                case "C":
+                    if(automataExpresion()){
+                        estado = "D";
+                    } else {
+                        estado = "D";
+                    }
+                    break;
+                case "D":
+                    if(tokenEsperado(TokenId.OPERADOR_LOGICO, indexToken) && !tokens.get(indexToken).getCadena().equals("not")){
+                       castear();
+                       estado = "F";
+                    } else {
+                        return true;
+                    }
+                    break;
+                case "E":
+                    if(automataExpresion()){
+                        estado = "B";
+                    } else {
+                        estado = "B";
+                    }
+                    break;
+                case "F":
+                     if(tokenEsperado(TokenId.OPERADOR_LOGICO, indexToken) && tokens.get(indexToken).getCadena().equals("not")){
+                        castear();
+                        estado = "E";
+                    } else if(automataExpresion()){
+                        estado = "B";
+                    } else {
+                        actualizarLinea();
+                        errores += "ERROR en linea :" + (linea) + ", falta expresion";
+                        System.out.println("ERROR en linea :" + (linea) + ", falta falta expresion");
+                        estado = "B";
+                    }
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+            
+        }
+        return false;
+    }
+    
     public void programa() throws SyntaxError {
         while (indexToken < tokens.size()) {
             sentencia();
@@ -536,20 +698,8 @@ public class AnalizadorS {
     }
 
     private void sentencia() {
-        if (tokens.get(indexToken).getId().equals(TokenId.IDENTIFICADOR) && tokenEsperado(TokenId.OPERADOR_ASIGNADOR, (indexToken + 1))) {
-            sentencias.add(tokens.get(indexToken));
-            castear();
-            if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken + 1) && tokens.get(indexToken).getCadena().equals("None")) {
-                castear();
-                if (saltoLinea()) {
-                }
-                validarDeclaracion();
-            } else {
-                castear();
-                if (saltoLinea()) {
-                }
-                //validarAsignacion();
-            }
+        if (automataDec()) {
+            
         } else if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) && tokenEsperado(TokenId.OPERADOR_ARITMETICO, (indexToken + 1))) {
             castear();
             //validarAsignacion();
