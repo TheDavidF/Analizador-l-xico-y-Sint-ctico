@@ -105,11 +105,13 @@ public class AnalizadorL {
                     }
                     System.out.println(identificador + identificador.length());
                     lineaT++;
+                    columnaActual++;
+                    columnaActual++;
                     columnaT = 0;
                     if (expresion.validarComentario(identificador)) {
-                        tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.COMENTARIO, identificador, expresion.getComentario()));
+                        tokens.add(new Token((lineaT), (columnaT + 1), TokenId.COMENTARIO, identificador, expresion.getComentario()));
                     } else {
-                        tokens.add(new Token((lineaT + 1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
+                        tokens.add(new Token((lineaT +1), (columnaT + 1), TokenId.ERROR_LEXICO, identificador, identificador));
                     }
                 } else if (cadena.charAt(columnaActual) == '"' || cadena.charAt(columnaActual) == '\'') {
                     String identificador = "";

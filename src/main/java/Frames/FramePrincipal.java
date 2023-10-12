@@ -97,6 +97,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         limpiarJLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         analizarLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        paneSin = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -110,8 +113,11 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(246, 244, 235));
+        setMinimumSize(new java.awt.Dimension(1100, 750));
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         PanelPrincipal.setBackground(new java.awt.Color(175, 211, 226));
+        PanelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setPreferredSize(new java.awt.Dimension(200, 200));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -125,6 +131,8 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText1.setOpaque(true);
         jPanel1.add(labelText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 800, 20));
 
+        Jscroll1.setForeground(new java.awt.Color(0, 0, 0));
+
         textArea1.setBackground(new java.awt.Color(246, 244, 235));
         textArea1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         textArea1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -134,8 +142,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         Jscroll1.setViewportView(textArea1);
 
-        jPanel1.add(Jscroll1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 330));
+        jPanel1.add(Jscroll1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 330));
 
+        PanelPrincipal.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 61, 610, 348));
+
+        jPanel2.setForeground(new java.awt.Color(60, 63, 65));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelText2.setBackground(new java.awt.Color(51, 51, 51));
@@ -147,10 +158,17 @@ public class FramePrincipal extends javax.swing.JFrame {
         labelText2.setOpaque(true);
         jPanel2.add(labelText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 790, 20));
 
+        textArea2.setEditable(false);
         textArea2.setBackground(new java.awt.Color(246, 244, 235));
+        textArea2.setForeground(new java.awt.Color(0, 0, 0));
+        textArea2.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        textArea2.setEnabled(false);
+        textArea2.setSelectionColor(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(textArea2);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 790, 200));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 200));
+
+        PanelPrincipal.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 463, 610, -1));
 
         lexicoLabel.setBackground(new java.awt.Color(70, 130, 169));
         lexicoLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -169,6 +187,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 lexicoLabelMouseExited(evt);
             }
         });
+        PanelPrincipal.add(lexicoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 119, 22));
 
         limpiarJLabel.setBackground(new java.awt.Color(70, 130, 169));
         limpiarJLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -187,9 +206,11 @@ public class FramePrincipal extends javax.swing.JFrame {
                 limpiarJLabelMouseExited(evt);
             }
         });
+        PanelPrincipal.add(limpiarJLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 21, 78, 22));
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT", 0, 18)); // NOI18N
         jLabel1.setText("Errores:");
+        PanelPrincipal.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 421, 71, 24));
 
         analizarLabel1.setBackground(new java.awt.Color(70, 130, 169));
         analizarLabel1.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -208,42 +229,33 @@ public class FramePrincipal extends javax.swing.JFrame {
                 analizarLabel1MouseExited(evt);
             }
         });
+        PanelPrincipal.add(analizarLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 20, 136, 22));
 
-        javax.swing.GroupLayout PanelPrincipalLayout = new javax.swing.GroupLayout(PanelPrincipal);
-        PanelPrincipal.setLayout(PanelPrincipalLayout);
-        PanelPrincipalLayout.setHorizontalGroup(
-            PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelPrincipalLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(PanelPrincipalLayout.createSequentialGroup()
-                            .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(36, 36, 36)
-                            .addComponent(lexicoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(30, 30, 30)
-                            .addComponent(analizarLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(32, Short.MAX_VALUE))
+        jScrollPane1.setForeground(new java.awt.Color(0, 0, 0));
+
+        paneSin.setEditable(false);
+        paneSin.setBackground(new java.awt.Color(246, 244, 235));
+        paneSin.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        paneSin.setForeground(new java.awt.Color(0, 0, 0));
+        paneSin.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        paneSin.setEnabled(false);
+        paneSin.setSelectionColor(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setViewportView(paneSin);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
         );
-        PanelPrincipalLayout.setVerticalGroup(
-            PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelPrincipalLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(PanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(limpiarJLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lexicoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(analizarLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
         );
+
+        PanelPrincipal.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 370, 622));
+
+        getContentPane().add(PanelPrincipal);
 
         jMenuBar1.setBackground(new java.awt.Color(70, 130, 169));
 
@@ -292,17 +304,6 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -317,7 +318,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_generarReporteActionPerformed
 
     private void lexicoLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lexicoLabelMouseClicked
-       analizarTexto();
+        analizarTexto();
     }//GEN-LAST:event_lexicoLabelMouseClicked
 
     private void menuGenerarGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuGenerarGMouseClicked
@@ -359,10 +360,17 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_textArea1KeyPressed
 
     private void analizarLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseClicked
-        if(this.analizadorS != null){
-            
+        if (this.analizadorS != null) {
+
             try {
                 analizadorS.analizar();
+                if(analizadorS.getErrores() == ""){
+                    paneSin.setText("Análisis sintáctico completado, no se encontraron errores");
+                } else {
+                    paneSin.setText(analizadorS.getErrores());
+                }
+                JOptionPane.showMessageDialog(this, "Análisis sintáctico realizado con éxito");
+
             } catch (Exception e) {
                 System.out.println("error en frame principal");
             }
@@ -421,6 +429,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             textArea2.setText(analisis);
             System.out.println("es comentario? " + expresion.validarComentario(texto));
             analizarS();
+            JOptionPane.showMessageDialog(this, "Análisis léxico realizado con éxito");
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
         }
@@ -490,7 +499,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void analizarS() {
         analizadorS = new AnalizadorS(lexico.getTokens());
-        
+
     }
 
     public AnalizadorL getLexico() {
@@ -525,7 +534,9 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelText1;
     private javax.swing.JLabel labelText2;
@@ -535,6 +546,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuGenerarG;
+    private javax.swing.JTextPane paneSin;
     private javax.swing.JTextPane textArea1;
     private javax.swing.JTextPane textArea2;
     // End of variables declaration//GEN-END:variables
