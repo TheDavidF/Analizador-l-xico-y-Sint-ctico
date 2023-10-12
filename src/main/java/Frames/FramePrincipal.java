@@ -113,6 +113,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(246, 244, 235));
+        setMinimumSize(new java.awt.Dimension(1100, 750));
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         PanelPrincipal.setBackground(new java.awt.Color(175, 211, 226));
@@ -186,7 +187,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 lexicoLabelMouseExited(evt);
             }
         });
-        PanelPrincipal.add(lexicoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(537, 21, 119, 22));
+        PanelPrincipal.add(lexicoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 119, 22));
 
         limpiarJLabel.setBackground(new java.awt.Color(70, 130, 169));
         limpiarJLabel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -245,14 +246,14 @@ public class FramePrincipal extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
         );
 
-        PanelPrincipal.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 330, 622));
+        PanelPrincipal.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 370, 622));
 
         getContentPane().add(PanelPrincipal);
 
@@ -317,7 +318,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_generarReporteActionPerformed
 
     private void lexicoLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lexicoLabelMouseClicked
-       analizarTexto();
+        analizarTexto();
     }//GEN-LAST:event_lexicoLabelMouseClicked
 
     private void menuGenerarGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuGenerarGMouseClicked
@@ -359,13 +360,17 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_textArea1KeyPressed
 
     private void analizarLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseClicked
-        if(this.analizadorS != null){
-            
+        if (this.analizadorS != null) {
+
             try {
                 analizadorS.analizar();
-                paneSin.setText(null);
-                paneSin.setText(analizadorS.getErrores());
-                
+                if(analizadorS.getErrores() == ""){
+                    paneSin.setText("Análisis sintáctico completado, no se encontraron errores");
+                } else {
+                    paneSin.setText(analizadorS.getErrores());
+                }
+                JOptionPane.showMessageDialog(this, "Análisis sintáctico realizado con éxito");
+
             } catch (Exception e) {
                 System.out.println("error en frame principal");
             }
@@ -424,6 +429,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             textArea2.setText(analisis);
             System.out.println("es comentario? " + expresion.validarComentario(texto));
             analizarS();
+            JOptionPane.showMessageDialog(this, "Análisis léxico realizado con éxito");
         } else {
             JOptionPane.showMessageDialog(this, "Ingrese codigo para analizar");
         }
@@ -444,7 +450,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         final AttributeSet colorRojo = contenido.addAttribute(contenido.getEmptySet(), StyleConstants.Foreground, new Color(255, 0, 0));
 
         StyledDocument doc = textArea1.getStyledDocument();
-        
+
         for (Token token : tokens) {
             AttributeSet atributo = null;
             switch (token.getId()) {
@@ -493,7 +499,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     private void analizarS() {
         analizadorS = new AnalizadorS(lexico.getTokens());
-        
+
     }
 
     public AnalizadorL getLexico() {
