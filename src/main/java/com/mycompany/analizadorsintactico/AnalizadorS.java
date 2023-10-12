@@ -820,12 +820,17 @@ public class AnalizadorS {
                         actualizarLinea();
                         errores += "Error en linea:" + linea + ", falta indentación" + "\n";
                         indentado = true;
-                    } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("break")) {
-                        actualizarLinea();
-                        errores += "Error en linea:" + linea + ", falta indentación" + "\n";
-                        nivelIndent = 1;
-                        estado = "C";
                     } else {
+                        if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("break")) {
+                            actualizarLinea();
+                            errores += "Error en linea:" + linea + ", falta indentación" + "\n";
+                            nivelIndent = 1;
+                            estado = "C";
+                            indent--;
+                            castear();
+                            return true;
+
+                        }
                         indent--;
                         return true;
                     }
