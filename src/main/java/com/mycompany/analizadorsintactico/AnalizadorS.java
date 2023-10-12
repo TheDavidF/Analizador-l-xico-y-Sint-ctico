@@ -81,7 +81,7 @@ public class AnalizadorS {
                         declarada = true;
                     }
                 }
-                if(!declarada){
+                if (!declarada) {
                     varDeclaradas.add(var);
                 }
             }
@@ -738,12 +738,14 @@ public class AnalizadorS {
                     }
                     if (tokenEsperado(TokenId.COMENTARIO, indexToken)) {
                         castear();
-                        estado = "A";
+                        estado = "C";
+                        nivelIndent = 1;
                         break;
                     }
                     if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
                         if (automataDec()) {
                             estado = "C";
+                            nivelIndent = 1;
                             if (!indentado) {
                                 actualizarLinea();
                                 errores += "ERROR en linea :" + (linea) + ", falta indentación en el bloque" + "\n";
@@ -751,18 +753,22 @@ public class AnalizadorS {
                             }
                             break;
                         } else {
+                            nivelIndent = 1;
                             estado = "C";
                             break;
                         }
                     } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("while")) {
                         if (automataWhile()) {
+                            nivelIndent = 1;
                             estado = "C";
                         } else {
+                            nivelIndent = 1;
                             estado = "C";
                             break;
                         }
                     } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("if")) {
                         if (automataIf()) {
+                            nivelIndent = 1;
                             estado = "C";
                         } else {
                             estado = "C";
@@ -771,20 +777,24 @@ public class AnalizadorS {
                     } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("break")) {
                         if (indentado) {
                             castear();
+                            nivelIndent = 1;
                             estado = "C";
                             romper = true;
                         } else {
                             actualizarLinea();
                             errores += "Error en linea:" + linea + ", falta indentación" + "\n";
                             castear();
+                            nivelIndent = 1;
                             estado = "C";
 
                         }
                     } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("print")) {
                         if (autoPrint()) {
+                            nivelIndent = 1;
                             estado = "C";
                         } else {
                             System.out.println("Error en linea: " + linea + ", sentencia invalida" + "\n");
+                            nivelIndent = 1;
                             estado = "C";
                         }
                     }
@@ -798,28 +808,26 @@ public class AnalizadorS {
                             indentado = false;
                             castear();
                         } else {
-                            if (nivelIndent == 1) {
-                                estado = "B";
-                                indentado = true;
-                                actualizarLinea();
-                                castear();
-                            } else {
-                                estado = "A";
-                                indentado = true;
-                                actualizarLinea();
-                                castear();
-                            }
+                            indentado = true;
+                            estado = "B";
+                            actualizarLinea();
+                            castear();
                         }
 
+                    } else if (!indentado && nivelIndent == indent && !tokens.get(indexToken).getCadena().equals("break")
+                            && !tokens.get(indexToken).getCadena().equals("else") && !tokens.get(indexToken).getCadena().equals("elif")) {
+                        estado = "B";
+                        actualizarLinea();
+                        errores += "Error en linea:" + linea + ", falta indentación" + "\n";
+                        indentado = true;
+                    } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("break")) {
+                        actualizarLinea();
+                        errores += "Error en linea:" + linea + ", falta indentación" + "\n";
+                        nivelIndent = 1;
+                        estado = "C";
                     } else {
-                        if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("break")) {
-                            actualizarLinea();
-                            errores += "Error en linea:" + linea + ", falta indentación" + "\n";
-                            estado = "B";
-                        }
                         indent--;
                         return true;
-
                     }
                     break;
                 default:
@@ -1146,7 +1154,7 @@ public class AnalizadorS {
         for (String variable : varDeclaradas) {
             if (variable.equals(var)) {
                 return true;
-            } 
+            }
 
         }
         return false;
