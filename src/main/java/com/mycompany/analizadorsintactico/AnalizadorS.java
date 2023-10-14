@@ -25,8 +25,10 @@ public class AnalizadorS {
     private String contenido = "";
     private ArrayList<BloqueDeCodigo> bloques;
     private Instruccion instruccion;
-
+    private ArrayList<String> parametros;
+    
     public AnalizadorS(ArrayList<Token> tokens) {
+        this.parametros = new ArrayList<>();
         this.instruccion = new Instruccion();
         this.tokens = tokens;
         this.bloques = new ArrayList<>();
@@ -135,7 +137,7 @@ public class AnalizadorS {
                 case "C":
                     if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken) && (indexToken + 1) != tokens.size() && tokens.get(indexToken + 1).getCadena().equals(")")) {
                         instruccion.agregarCadena(tokens.get(indexToken).getCadena());
-                        if (estaDeclarada(tokens.get(indexToken).getCadena())) {
+                        if (estaDeclarada(tokens.get(indexToken).getCadena()) || parametrosV(tokens.get(indexToken).getCadena())) {
                             castear();
                             estado = "D";
                         } else {
@@ -455,7 +457,7 @@ public class AnalizadorS {
                             contenido += tokens.get(indexToken).getCadena();
                             estado = "B";
                             if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
-                                if (estaDeclarada(tokens.get(indexToken).getCadena())) {
+                                if (estaDeclarada(tokens.get(indexToken).getCadena()) || parametrosV(tokens.get(indexToken).getCadena())) {
                                     instruccion.agregarCadena(tokens.get(indexToken).getCadena());
                                     castear();
                                     break;
@@ -962,6 +964,15 @@ public class AnalizadorS {
         }
 
     }
+    
+    private boolean parametrosV(String paraString){
+        for (String parametro : parametros) {
+            if(parametro.equals(paraString)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     //para expresiones funciona y en teoria para condicionales if
     private boolean automataBloque(BloqueDeCodigo bloque1) {
@@ -1084,9 +1095,10 @@ public class AnalizadorS {
                         if (automataExpresion()) {
                             nivelIndent = 1;
                             estado = "C";
+                            return true;
                         } else {
                             estado = "C";
-                            break;
+                            return true;
                         }
                     } else if (tokenEsperado(TokenId.CONSTANTE, indexToken)) {
                         if (automataExpresion()) {
@@ -1347,6 +1359,7 @@ public class AnalizadorS {
                     break;
                 case "B":
                     if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
+                        parametros.add(tokens.get(indexToken).getCadena());
                         instruccion.agregarCadena(tokens.get(indexToken).getCadena());
                         estado = "C";
                         castear();
@@ -1482,7 +1495,7 @@ public class AnalizadorS {
                     }
                     break;
                 case "L":
-                    if (tokenEsperado(TokenId.CONSTANTE, indexToken)) {
+                    if (tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
                         instruccion.agregarCadena(tokens.get(indexToken).getCadena());
                         castear();
                         estado = "M";
@@ -1508,7 +1521,7 @@ public class AnalizadorS {
                     }
                     break;
                 case "N":
-                    if (tokenEsperado(TokenId.CONSTANTE, indexToken)) {
+                    if (tokenEsperado(TokenId.CONSTANTE, indexToken) || tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
                         instruccion.agregarCadena(tokens.get(indexToken).getCadena());
                         castear();
                         estado = "K";
@@ -1556,7 +1569,7 @@ public class AnalizadorS {
                         lineaInicio = tokens.get(indexToken).getLinea();
                         columnaInicio = tokens.get(indexToken).getColumna();
                         actualizarLinea();
-                        funcion = new Funcion(tokens.get(indexToken).getCadena(), tokens.get(indexToken).getLinea(), tokens.get(indexToken).getColumna());
+                        funcion = new Funcion(tokens.get(indexToken).getCadena(), tokens.get(indexToken).getLinea(), tokens.get(indexToken).getColumna(), parametros);
                         castear();
                         estado = "C";
                     } else {
@@ -1582,6 +1595,7 @@ public class AnalizadorS {
                         estado = "F";
                         castear();
                     } else if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
+                        parametros.add(tokens.get(indexToken).getCadena());
                         estado = "I";
                         castear();
                     } else {
@@ -1633,6 +1647,7 @@ public class AnalizadorS {
                     break;
                 case "J":
                     if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
+                        parametros.add(tokens.get(indexToken).getCadena());
                         estado = "I";
                         castear();
                     } else {

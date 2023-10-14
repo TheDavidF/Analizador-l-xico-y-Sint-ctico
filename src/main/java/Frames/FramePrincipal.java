@@ -109,8 +109,6 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         menuGenerarG = new javax.swing.JMenu();
-        menuAcercade = new javax.swing.JMenu();
-        menuAyuda = new javax.swing.JMenu();
 
         jPopupMenu1.setBackground(new java.awt.Color(145, 200, 228));
 
@@ -312,14 +310,6 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(menuGenerarG);
-
-        menuAcercade.setForeground(new java.awt.Color(246, 244, 235));
-        menuAcercade.setText("Acerca de");
-
-        menuAyuda.setText("Ayuda");
-        menuAcercade.add(menuAyuda);
-
-        jMenuBar1.add(menuAcercade);
 
         setJMenuBar(jMenuBar1);
 
@@ -589,9 +579,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel labelText2;
     private javax.swing.JLabel lexicoLabel;
     private javax.swing.JLabel limpiarJLabel;
-    private javax.swing.JMenu menuAcercade;
     private javax.swing.JMenu menuArchivo;
-    private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuGenerarG;
     private javax.swing.JTextPane paneSin;
     private javax.swing.JTextPane textArea1;

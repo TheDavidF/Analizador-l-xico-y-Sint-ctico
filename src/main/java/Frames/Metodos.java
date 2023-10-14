@@ -27,7 +27,7 @@ public class Metodos extends javax.swing.JFrame {
     }
 
     private void crearModelo(){
-        String[] cabecera = {"Función", "Linea", "Columna", "Cantidad de llamadas"};
+        String[] cabecera = {"Función", "Linea", "Columna","Parámetros", "Cantidad de llamadas"};
         modelReporte.setColumnIdentifiers(cabecera);
         tabla.setModel(modelReporte);
     } 
@@ -38,7 +38,8 @@ public class Metodos extends javax.swing.JFrame {
             datos[0] = funcion.getNombre();
             datos[1] = funcion.getLinea();
             datos[2] = funcion.getColumna();
-            datos[3] = funcion.getLlamadas();
+            datos[3] = funcion.parametros();
+            datos[4] = funcion.getLlamadas();
             
             modelReporte.addRow(datos);
         }
