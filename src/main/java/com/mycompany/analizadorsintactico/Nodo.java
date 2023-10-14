@@ -11,18 +11,18 @@ package com.mycompany.analizadorsintactico;
  */
 public class Nodo {
     
-    private String token;
+    private String cadena;
     private Nodo siguiente;
     
     public Nodo (){
     }
 
     public String getToken() {
-        return token;
+        return cadena;
     }
 
     public void setToken(String token) {
-        this.token = token;
+        this.cadena = token;
     }
 
     public Nodo getSiguiente() {

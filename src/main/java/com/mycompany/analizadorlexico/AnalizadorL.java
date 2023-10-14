@@ -45,6 +45,7 @@ public class AnalizadorL {
                         lineaT++;
                     }
                 } else if (Character.isWhitespace(charActual)) {
+                    indent = 0;
                     int columna = columnaActual;
                     int comumaTemp = columnaT;
                     while (indent < 4 && Character.isWhitespace(cadena.charAt(columnaActual))) {

@@ -11,6 +11,7 @@ import com.mycompany.analizadorlexico.Token;
 import com.mycompany.analizadorlexico.TokenId;
 import static com.mycompany.analizadorlexico.TokenId.IDENTIFICADOR;
 import com.mycompany.analizadorsintactico.AnalizadorS;
+import com.mycompany.analizadorsintactico.BloqueDeCodigo;
 import com.mycompany.analizadorsintactico.SyntaxError;
 import java.awt.Color;
 import java.awt.Font;
@@ -383,6 +384,10 @@ public class FramePrincipal extends javax.swing.JFrame {
             try {
                 analizadorS.analizar();
                 if (analizadorS.getErrores() == "") {
+                    ArrayList<BloqueDeCodigo> bloques = analizadorS.getBloques();
+                    for (BloqueDeCodigo bloque : bloques) {
+                        System.out.println(bloque.toString());
+                    }
                     paneSin.setText("Análisis sintáctico completado, no se encontraron errores");
                 } else {
                     paneSin.setText(analizadorS.getErrores());
