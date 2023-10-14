@@ -8,33 +8,60 @@ package com.mycompany.analizadorsintactico;
  *
  * @author DAVID
  */
-public class Variable{
+public class Variable {
     
-    private String id;
-    private int llamadas;
+    private String nomre;
     private int linea;
+    private String tipo;
+    private int columna;
+    private String expresion = "";
     
-    public Variable (String variable, int linea){
-        this.id = variable;
-        this.llamadas = 0;
+    public Variable(String nombre, int linea, int columna){
+        this.nomre = nombre;
         this.linea = linea;
-            
+        this.columna = columna;
     }
 
-    public String getId() {
-        return id;
+    public int getColumna() {
+        return columna;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setColumna(int columna) {
+        this.columna = columna;
+    }
+    
+    
+
+    public String getNomre() {
+        return nomre;
     }
 
-    public int getLlamadas() {
-        return llamadas;
+    public void setNomre(String nomre) {
+        this.nomre = nomre;
     }
 
-    public void setLlamadas(int llamadas) {
-        this.llamadas = llamadas;
+    public int getLinea() {
+        return linea;
+    }
+
+    public void setLinea(int linea) {
+        this.linea = linea;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getExpresion() {
+        return expresion;
+    }
+
+    public void setExpresion(String expresion) {
+        this.expresion = expresion;
     }
     
     

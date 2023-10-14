@@ -4,7 +4,6 @@
  */
 package com.mycompany.analizadorsintactico;
 
-import com.mycompany.analizadorlexico.Token;
 
 /**
  *
@@ -18,7 +17,7 @@ public class Pila {
         raiz=null;
     }
     
-    public void insertar(Token token) {
+    public void insertar(String token) {
     	Nodo nuevo;
         nuevo = new Nodo();
         nuevo.setToken(token);
@@ -34,11 +33,11 @@ public class Pila {
         }
     }
     
-        public Token extraer ()
+        public String extraer ()
     {
         if (raiz!=null)
         {
-            Token token = raiz.getToken();
+            String token = raiz.getToken();
             raiz = raiz.getSiguiente();
             return token;
         }
