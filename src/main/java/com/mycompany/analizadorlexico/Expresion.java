@@ -41,13 +41,13 @@ public class Expresion {
     private final String decimal = "[0-9]+[.]{1}[0-9]+";
     private Pattern pDecimal;
     //patron para operadores aritmeticos
-    private final String operador = "[-+*/]|[/]{1,2}|[*]{1,2}";
+    private final String operador = "[-+*/%]|[/]{1,2}|[*]{1,2}";
     private Pattern pOperador;
     //patron para identificado
     private final String identificador = "[a-zA-Z_][a-zA-Z\\d_]*";
     private Pattern patternid;
     //patron para keyWords
-    private final String keyWords = "\\b(print|and|as|assert|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)\\b";
+    private final String keyWords = "\\b(range|print|and|as|assert|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)\\b";
     private Pattern pKeywords;
     
     

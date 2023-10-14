@@ -4,7 +4,6 @@
  */
 package com.mycompany.analizadorsintactico;
 
-import com.mycompany.analizadorlexico.Token;
 
 /**
  *
@@ -12,18 +11,18 @@ import com.mycompany.analizadorlexico.Token;
  */
 public class Nodo {
     
-    private Token token;
+    private String cadena;
     private Nodo siguiente;
     
     public Nodo (){
     }
 
-    public Token getToken() {
-        return token;
+    public String getToken() {
+        return cadena;
     }
 
-    public void setToken(Token token) {
-        this.token = token;
+    public void setToken(String token) {
+        this.cadena = token;
     }
 
     public Nodo getSiguiente() {

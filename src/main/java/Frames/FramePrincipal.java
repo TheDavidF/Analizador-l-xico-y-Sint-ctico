@@ -11,6 +11,7 @@ import com.mycompany.analizadorlexico.Token;
 import com.mycompany.analizadorlexico.TokenId;
 import static com.mycompany.analizadorlexico.TokenId.IDENTIFICADOR;
 import com.mycompany.analizadorsintactico.AnalizadorS;
+import com.mycompany.analizadorsintactico.BloqueDeCodigo;
 import com.mycompany.analizadorsintactico.SyntaxError;
 import java.awt.Color;
 import java.awt.Font;
@@ -105,9 +106,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         generarReporte = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         menuGenerarG = new javax.swing.JMenu();
-        menuAcercade = new javax.swing.JMenu();
-        menuAyuda = new javax.swing.JMenu();
 
         jPopupMenu1.setBackground(new java.awt.Color(145, 200, 228));
 
@@ -283,6 +284,22 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(generarReporte);
 
+        jMenuItem2.setText("Generar tabla de simbolos");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Ver métodos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
         jMenuBar1.add(jMenu1);
 
         menuGenerarG.setForeground(new java.awt.Color(246, 244, 235));
@@ -293,14 +310,6 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(menuGenerarG);
-
-        menuAcercade.setForeground(new java.awt.Color(246, 244, 235));
-        menuAcercade.setText("Acerca de");
-
-        menuAyuda.setText("Ayuda");
-        menuAcercade.add(menuAyuda);
-
-        jMenuBar1.add(menuAcercade);
 
         setJMenuBar(jMenuBar1);
 
@@ -364,7 +373,11 @@ public class FramePrincipal extends javax.swing.JFrame {
 
             try {
                 analizadorS.analizar();
-                if(analizadorS.getErrores() == ""){
+                if (analizadorS.getErrores() == "") {
+                    ArrayList<BloqueDeCodigo> bloques = analizadorS.getBloques();
+                    for (BloqueDeCodigo bloque : bloques) {
+                        System.out.println(bloque.toString());
+                    }
                     paneSin.setText("Análisis sintáctico completado, no se encontraron errores");
                 } else {
                     paneSin.setText(analizadorS.getErrores());
@@ -386,6 +399,24 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void analizarLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_analizarLabel1MouseExited
         analizarLabel1.setBackground(new Color(70, 130, 169));
     }//GEN-LAST:event_analizarLabel1MouseExited
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            this.setVisible(false);
+            TablaSim simbolos = new TablaSim(this);
+            simbolos.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Se requiere analisis léxico previo");
+        }
+
+
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        Metodos metodos = new Metodos(this);
+        this.setVisible(false);
+        metodos.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     public int getLinea() {
         return linea;
@@ -506,6 +537,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         return lexico;
     }
 
+    public AnalizadorS getSin() {
+        return analizadorS;
+    }
+
     private ArrayList<Integer> calcularPosicionInicio(StyledDocument doc, Token token) {
         ArrayList<Integer> posiciones = new ArrayList<>();
         try {
@@ -532,6 +567,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -542,9 +579,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel labelText2;
     private javax.swing.JLabel lexicoLabel;
     private javax.swing.JLabel limpiarJLabel;
-    private javax.swing.JMenu menuAcercade;
     private javax.swing.JMenu menuArchivo;
-    private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuGenerarG;
     private javax.swing.JTextPane paneSin;
     private javax.swing.JTextPane textArea1;
