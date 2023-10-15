@@ -26,7 +26,9 @@ public class AnalizadorS {
     private ArrayList<BloqueDeCodigo> bloques;
     private Instruccion instruccion;
     private ArrayList<String> parametros;
-    
+    private boolean finalizoBloque;
+    private boolean ternario ;
+
     public AnalizadorS(ArrayList<Token> tokens) {
         this.parametros = new ArrayList<>();
         this.instruccion = new Instruccion();
@@ -38,6 +40,8 @@ public class AnalizadorS {
         this.errores = "";
         this.funciones = new ArrayList<>();
         this.indent = 0;
+        this.finalizoBloque = false;
+        this.ternario = false;
 
     }
 
@@ -366,6 +370,7 @@ public class AnalizadorS {
     }
 
     private boolean autoTernario() {
+        ternario = true;
         estado = "A";
         while (indexToken < tokens.size()) {
             switch (estado) {
@@ -377,7 +382,7 @@ public class AnalizadorS {
                     }
                     break;
                 case "B":
-                    if (automataCond()) {
+                    if (automataExpresion()) {
                         estado = "C";
                     } else {
                         estado = "C";
@@ -399,6 +404,7 @@ public class AnalizadorS {
                     break;
                 case "E":
                     instruccion.vaciarInstruccion();
+                    ternario = false;
                     return true;
                 default:
                     throw new AssertionError();
@@ -407,9 +413,11 @@ public class AnalizadorS {
         if (indexToken == tokens.size() && !estado.equals("E")) {
             actualizarLinea();
             errores += "Error en linea: " + linea + " condicional ternario invalido" + "\n";
+            ternario = false;
             return false;
         } else {
             instruccion.vaciarInstruccion();
+            ternario = false;
             return true;
         }
     }
@@ -508,7 +516,7 @@ public class AnalizadorS {
                             contenido += tokens.get(indexToken).getCadena();
                             estado = "C";
                             castear();
-                        } else if (tokenEsperado(TokenId.OPERADOR_COMPARACION, indexToken)) {
+                        } else if (tokenEsperado(TokenId.OPERADOR_COMPARACION, indexToken) ) {
                             instruccion.agregarCadena(tokens.get(indexToken).getCadena());
                             contenido += tokens.get(indexToken).getCadena();
                             estado = "C";
@@ -544,7 +552,7 @@ public class AnalizadorS {
                             contenido += tokens.get(indexToken).getCadena();
                             estado = "B";
                             if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
-                                if (estaDeclarada(tokens.get(indexToken).getCadena())) {
+                                if (estaDeclarada(tokens.get(indexToken).getCadena()) || parametrosV(tokens.get(indexToken).getCadena())) {
                                     instruccion.agregarCadena(tokens.get(indexToken).getCadena());
                                     castear();
                                     break;
@@ -964,10 +972,10 @@ public class AnalizadorS {
         }
 
     }
-    
-    private boolean parametrosV(String paraString){
+
+    private boolean parametrosV(String paraString) {
         for (String parametro : parametros) {
-            if(parametro.equals(paraString)){
+            if (parametro.equals(paraString)) {
                 return true;
             }
         }
@@ -1023,9 +1031,11 @@ public class AnalizadorS {
                         break;
                     }
                     if (tokenEsperado(TokenId.IDENTIFICADOR, indexToken)) {
+                        castear();
                         if ((indexToken + 1) != tokens.size()
-                                && tokenEsperado(TokenId.OTROS_OPERADORES, indexToken + 1)
-                                && tokens.get(indexToken + 1).getCadena().equals("(") || tokenEsperado(TokenId.OPERADOR_ARITMETICO, indexToken + 1)) {
+                                && (!tokenEsperado(TokenId.OPERADOR_ASIGNADOR, indexToken) || tokenEsperado(TokenId.OPERADOR_ARITMETICO, indexToken))
+                                && !tokenEsperado(TokenId.OPERADOR_ASIGNADOR, indexToken + 1)) {
+                            indexToken--;
                             if (automataExpresion()) {
                                 estado = "C";
                                 nivelIndent = 1;
@@ -1034,6 +1044,7 @@ public class AnalizadorS {
                                 nivelIndent = 1;
                             }
                         } else {
+                            indexToken--;
                             if (automataDec()) {
                                 estado = "C";
                                 nivelIndent = 1;
@@ -1060,6 +1071,14 @@ public class AnalizadorS {
                         }
                     } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("if")) {
                         if (automataIf()) {
+                            nivelIndent = 1;
+                            estado = "C";
+                        } else {
+                            estado = "C";
+                            break;
+                        }
+                    } else if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("for")) {
+                        if (autoFor()) {
                             nivelIndent = 1;
                             estado = "C";
                         } else {
@@ -1095,9 +1114,11 @@ public class AnalizadorS {
                         if (automataExpresion()) {
                             nivelIndent = 1;
                             estado = "C";
+                            indent--;
                             return true;
                         } else {
                             estado = "C";
+                            indent--;
                             return true;
                         }
                     } else if (tokenEsperado(TokenId.CONSTANTE, indexToken)) {
@@ -1139,6 +1160,31 @@ public class AnalizadorS {
                         actualizarLinea();
                         errores += "Error en linea:" + linea + ", falta indentación" + "\n";
                         indentado = true;
+                    } else if (!indentado && (tokens.get(indexToken).getCadena().equals("else") || tokens.get(indexToken).getCadena().equals("elif"))) {
+                        if (saltoLinea()) {
+                            if (nivelIndent == (indent - 1)) {
+                                indent--;
+                                nivelIndent = 1;
+                                indentado = true;
+                                finalizoBloque = true;
+                                return true;
+                            } else if (nivelIndent == indent) {
+                                indent--;
+                                nivelIndent = 1;
+                                indentado = true;
+                                return true;
+                            }
+                            indent--;
+                            nivelIndent = 1;
+                            indentado = true;
+                            return true;
+                        } else {
+                            estado = "B";
+                            actualizarLinea();
+                            errores += "Error en linea: " + linea + ", sentencia invalida" + "\n";
+                            castear();
+                            indentado = true;
+                        }
                     } else {
                         if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("break")) {
                             actualizarLinea();
@@ -1151,6 +1197,42 @@ public class AnalizadorS {
                             bloques.add(bloque);
                             return true;
 
+                        }
+                        if (tokenEsperado(TokenId.PALABRA_RESERVADA, indexToken) && tokens.get(indexToken).getCadena().equals("return")) {
+                            castear();
+                            if (nivelIndent > 1 && indent > 0) {
+                                if (automataExpresion()) {
+                                    nivelIndent = 1;
+                                    estado = "C";
+                                    indent--;
+                                    bloque.setInstrucciones(instruccion.getBloque().getInstrucciones());
+                                    bloques.add(bloque);
+                                    return true;
+                                } else {
+                                    estado = "C";
+                                    indent--;
+                                    bloque.setInstrucciones(instruccion.getBloque().getInstrucciones());
+                                    bloques.add(bloque);
+                                    return true;
+                                } 
+                            }else {
+                                actualizarLinea();
+                                errores += errores += "Error en linea:" + linea + ", falta indentación" + "\n";;
+                               if (automataExpresion()) {
+                                    nivelIndent = 1;
+                                    estado = "C";
+                                    indent--;
+                                    bloque.setInstrucciones(instruccion.getBloque().getInstrucciones());
+                                    bloques.add(bloque);
+                                    return true;
+                                } else {
+                                    estado = "C";
+                                    indent--;
+                                    bloque.setInstrucciones(instruccion.getBloque().getInstrucciones());
+                                    bloques.add(bloque);
+                                    return true;
+                                }      
+                            }
                         }
                         indent--;
                         bloque.setInstrucciones(instruccion.getBloque().getInstrucciones());
@@ -1172,10 +1254,10 @@ public class AnalizadorS {
         }
     }
 
-    public ArrayList<BloqueDeCodigo> getBloques(){
+    public ArrayList<BloqueDeCodigo> getBloques() {
         return bloques;
     }
-    
+
     private boolean automataCond() {
         estado = "A";
         while (indexToken < tokens.size()) {
@@ -1439,7 +1521,13 @@ public class AnalizadorS {
                         instruccion.agregarCadena(tokens.get(indexToken).getCadena());
                         lineaInicio = tokens.get(indexToken).getLinea();
                         columnaInicio = tokens.get(indexToken).getColumna();
-                        estado = "H";
+                        if (finalizoBloque == false) {
+                            estado = "H";
+                        } else {
+                            estado = "J";
+                            break;
+                        }
+
                         castear();
                     } else {
                         instruccion.vaciarInstruccion();
